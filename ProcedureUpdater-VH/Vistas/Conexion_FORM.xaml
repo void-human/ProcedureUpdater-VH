@@ -1,0 +1,93 @@
+﻿<Window 
+        x:Class="ProcedureUpdater_VH.Vistas.Conexion_FORM"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
+        mc:Ignorable="d"
+        Title="Conexión"
+        Width="380"
+        Height="370">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid
+            Background="#1F1F1F" Grid.ColumnSpan="3">
+            <Label 
+                Content="Información de Conexión"
+                Foreground="White"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                />
+        </Grid>
+
+        <Grid 
+            Grid.Row="2"
+            Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="45"/>
+            </Grid.RowDefinitions>
+
+            <TextBox
+                Grid.Row="0"
+                materialDesign:HintAssist.Hint="Usuario"
+                materialDesign:HintAssist.IsFloating="True"
+                x:Name="txt_Usuario"
+                />
+
+            <TextBox
+                Grid.Row="2"
+                materialDesign:HintAssist.Hint="Contraseña"
+                materialDesign:HintAssist.IsFloating="True"
+                x:Name="txt_Contrasena"
+                />
+
+            <TextBox
+                Grid.Row="4"
+                materialDesign:HintAssist.Hint="Base de datos"
+                materialDesign:HintAssist.IsFloating="True"
+                x:Name="txt_BDD"
+                />
+
+            <TextBox
+                Grid.Row="6"
+                materialDesign:HintAssist.Hint="Dirección IP"
+                materialDesign:HintAssist.IsFloating="True"
+                x:Name="txt_IP"
+                LostFocus="txt_IP_LostFocus"
+                />
+        </Grid>
+
+        <Button 
+            x:Name="btn_Guardar"
+            Content="Guardar"
+            Background="#1F1F1F"
+            Grid.Row="4"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Click="btn_Guardar_Click"
+            Width="120"/>
+        
+    </Grid>
+</Window>
