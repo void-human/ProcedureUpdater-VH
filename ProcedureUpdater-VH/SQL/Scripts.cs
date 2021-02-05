@@ -12,7 +12,7 @@ namespace ProcedureUpdater_VH.SQL
         {
             string sScript = "";
 
-            sScript = "SELECT Specific_name, Routine_definition FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = 'PROCEDURE'";
+            sScript = "SELECT Specific_name as Nombre, Routine_definition as Script FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = 'PROCEDURE'";
 
             return sScript;
         }

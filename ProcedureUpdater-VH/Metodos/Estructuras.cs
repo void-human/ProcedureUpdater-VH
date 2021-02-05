@@ -20,7 +20,8 @@ namespace ProcedureUpdater_VH.Metodos
     public class Procedure
     {
         public string Nombre { set; get; }
-        public string Definicion { set; get; }
+        public string DefinicionV1 { set; get; }
+        public string DefinicionV2 { set; get; }
         public bool Modificar { set; get; }
     }
 }
