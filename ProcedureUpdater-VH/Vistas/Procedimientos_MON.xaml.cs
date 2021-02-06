@@ -2,6 +2,7 @@
 using ProcedureUpdater_VH.SQL;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,48 +20,78 @@ namespace ProcedureUpdater_VH.Vistas
     /// </summary>
     public partial class Procedimientos_MON : Window
     {
-        List<Procedure> lstProcedimiento = new List<Procedure>();
-        Ejecutor ejecutor = new Ejecutor();
+        private List<Procedure> lstProcedimiento = new List<Procedure>();
+        private Ejecutor ejecutor = new Ejecutor();
+        private List<Conexion> lstConexiones = new List<Conexion>();
+        private Conexion ConexionV1 = null;
+        private Conexion ConexionV2 = null;
 
         public Procedimientos_MON()
         {
             InitializeComponent();
             
-            //CargarDatos();
+            CargarDatos();
         }
 
-        public void CargarDatos()
+        private void CargarDatos()
         {
-            ejecutor.ObtenerProcedimientos(null,null);
+            lstConexiones = Conversor.OpenXML();
+
+            cbx_ConexionV1.ItemsSource = lstConexiones;
+            cbx_ConexionV2.ItemsSource = lstConexiones;
+
+            cbx_ConexionV1.Items.Refresh();
+            cbx_ConexionV2.Items.Refresh();
+
+            cbx_ConexionV1.SelectedValuePath = "BDD";
+            cbx_ConexionV1.DisplayMemberPath = "BDD";
+
+            cbx_ConexionV2.SelectedValuePath = "BDD";
+            cbx_ConexionV2.DisplayMemberPath = "BDD";
+        }
+
+        private void BuscarProcedures()
+        {
+            ConexionV1 = (Conexion)cbx_ConexionV1.SelectedItem;
+            ConexionV2 = (Conexion)cbx_ConexionV2.SelectedItem;
+
+            ejecutor.ObtenerProcedimientos(ConexionV1, ConexionV2);
             lstProcedimiento = ejecutor.lstProcedimiento;
-            dg_Procedimientos.ItemsSource = lstProcedimiento;
-
+            dg_Procedimientos.ItemsSource = lstProcedimiento.OrderBy(x => x.Nombre).ToList();
+            dg_Procedimientos.Items.Refresh();
         }
 
-        public void AbrirV1()
+        private void Abrir()
         {
             Procedure procedure = (Procedure)dg_Procedimientos.SelectedItem;
-            Script_VISOR visor = new Script_VISOR(procedure.DefinicionV1);
-            visor.Show();
+            Script_VISOR visor = new Script_VISOR(procedure.Nombre, procedure.DefinicionV1, procedure.DefinicionV2);
+            visor.ShowDialog();
         }
 
-        public void AbrirV2()
+        private void Editar()
         {
-            Procedure procedure = (Procedure)dg_Procedimientos.SelectedItem;
-            Script_VISOR visor = new Script_VISOR(procedure.DefinicionV2);
-            visor.Show();
+            Conexion_FORM conexion = new Conexion_FORM();
+            conexion.ShowDialog();
+            if (conexion.bGuardar)
+            {
+                CargarDatos();
+            }
         }
-
-
 
         private void btn_AbrirV1_Click(object sender, RoutedEventArgs e)
         {
-            AbrirV1();
+            Abrir();
         }
 
-        private void btn_AbrirV2_Click(object sender, RoutedEventArgs e)
+        private void btn_Editar_Click(object sender, RoutedEventArgs e)
         {
-            AbrirV2();
+            Editar();
         }
+
+        private void btn_Buscar_Click(object sender, RoutedEventArgs e)
+        {
+            BuscarProcedures();
+        }
+
     }
 }

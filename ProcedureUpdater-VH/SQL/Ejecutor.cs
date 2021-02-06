@@ -62,6 +62,7 @@ namespace ProcedureUpdater_VH.SQL
                     {
                         string sNombre = (string)DR["Nombre"];
                         string sScript = (string)DR["Script"];
+                        sScript = sScript.Replace("[", "").Replace("]", "");
                         int nIndice = lstProcedimiento.FindIndex(x => x.Nombre.Equals(sNombre));
                         if (nIndice == -1)
                         {

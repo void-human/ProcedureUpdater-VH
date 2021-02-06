@@ -18,6 +18,9 @@ namespace ProcedureUpdater_VH.Vistas
     /// </summary>
     public partial class Conexion_FORM : Window
     {
+
+        public bool bGuardar = false;
+
         public Conexion_FORM()
         {
             InitializeComponent();
@@ -31,7 +34,11 @@ namespace ProcedureUpdater_VH.Vistas
             conexion.IP = txt_IP.Text;
             conexion.Usuario = txt_Usuario.Text;
 
-            Conversor.GuardarConexion(conexion);
+            bGuardar = Conversor.GuardarConexion(conexion);
+            if (bGuardar)
+            {
+                this.Close();
+            }
         }
 
         private void btn_Guardar_Click(object sender, RoutedEventArgs e)

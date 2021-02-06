@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
         Title="Procedimientos_MON" 
@@ -10,6 +11,8 @@
         Width="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="40*"/>
@@ -23,8 +26,6 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
-        
-        
         <Grid
             Background="#1F1F1F" Grid.ColumnSpan="3">
             <Label 
@@ -35,10 +36,74 @@
                 />
         </Grid>
 
-        <DataGrid
-            x:Name="dg_Procedimientos"
+        <Grid
             Grid.Row="2"
             Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <ComboBox
+                x:Name="cbx_ConexionV1"
+                materialDesign:HintAssist.Hint="Conexión v1:"
+                materialDesign:HintAssist.IsFloating="True"
+                Width="160"
+                Grid.Column="0"
+                />
+
+            <ComboBox
+                x:Name="cbx_ConexionV2"
+                materialDesign:HintAssist.Hint="Conexión v2:"
+                materialDesign:HintAssist.IsFloating="True"
+                Width="160"
+                Grid.Column="1"
+                />
+
+            <Button
+                x:Name="btn_Buscar"
+                Click="btn_Buscar_Click"
+                Width="50"
+                Grid.Column="2"
+                >
+                <materialDesign:PackIcon 
+                    Kind="Search" 
+                    Foreground="White"/>
+            </Button>
+
+            <Button
+                x:Name="btn_Editar"
+                Click="btn_Editar_Click"
+                Width="150"
+                Grid.Column="3"
+                HorizontalAlignment="Right"
+                >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon 
+                        Kind="Edit" 
+                        VerticalAlignment="Center"
+                        Grid.Column="0"/>
+                    <Label 
+                        Foreground="White"
+                        Content="Conexiones"
+                        Grid.Column="1"/>
+                </Grid>
+            </Button>
+
+        </Grid>
+
+        <DataGrid
+            x:Name="dg_Procedimientos"
+            Grid.Row="4"
+            Grid.Column="1"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False">
             
             <DataGrid.Columns>
 
@@ -59,23 +124,17 @@
                     Binding="{Binding Nombre}"/>
                 
                 <DataGridTemplateColumn
-                    Header="Script v1">
+                    Header="Scripts">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button
                                 x:Name="btn_AbrirV1"
-                                Click="btn_AbrirV1_Click"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn
-                    Header="Script v2">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button
-                                x:Name="btn_AbrirV2"
-                                Click="btn_AbrirV2_Click"/>
+                                Click="btn_AbrirV1_Click"
+                                >
+                                <materialDesign:PackIcon
+                                     Kind="Eye"
+                                    Foreground="White"/>
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

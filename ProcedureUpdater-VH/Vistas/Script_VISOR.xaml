@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
-        Title="Script_VISOR" Height="450" Width="500">
+        Title="Script_VISOR" 
+        Height="450" 
+        Width="500"
+        WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -31,11 +34,47 @@
                 />
         </Grid>
 
-        <TextBlock
-            x:Name="txt_script"
+        <DataGrid
+            x:Name="dg_Scripts"
+            CanUserAddRows="False"
+            AutoGenerateColumns="False"
+            IsReadOnly="True"
             Grid.Column="1"
-            Grid.Row="2"
-            />
+            Grid.Row="2">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header="#"
+                    Binding="{Binding Indice}"/>
+
+                <DataGridTextColumn
+                    Header="v1"
+                    Binding="{Binding v1}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding bNuevo}" Value="True">
+                                    <Setter Property="Background" Value="#DBF4D8"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn
+                    Header="v2"
+                    Binding="{Binding v2}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding bRemovido}" Value="True">
+                                    <Setter Property="Background" Value="#FFC3C2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <Button
             x:Name="btn_Cerrar"
