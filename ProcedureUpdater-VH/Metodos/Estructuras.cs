@@ -6,7 +6,6 @@ namespace ProcedureUpdater_VH.Metodos
 {
     public class Estructuras
     {
-        
     }
 
     public class Conexion

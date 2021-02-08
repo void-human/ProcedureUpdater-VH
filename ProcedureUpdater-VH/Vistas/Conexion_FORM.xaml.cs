@@ -24,6 +24,8 @@ namespace ProcedureUpdater_VH.Vistas
         public Conexion_FORM()
         {
             InitializeComponent();
+
+            Conversor.OpenXML();
         }
 
         public void Guardar()
@@ -39,12 +41,15 @@ namespace ProcedureUpdater_VH.Vistas
             {
                 this.Close();
             }
+
+            Conversor.GuardarConexion(conexion);
         }
 
         private void btn_Guardar_Click(object sender, RoutedEventArgs e)
         {
             Guardar();
         }
+
 
         private void txt_IP_LostFocus(object sender, RoutedEventArgs e)
         {
