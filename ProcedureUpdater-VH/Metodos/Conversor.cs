@@ -12,9 +12,16 @@ namespace ProcedureUpdater_VH.Metodos
         public static bool GuardarConexion(Conexion objConexion)
         {
             string sXML = "";
-
             try
             {
+                string sKey = Guid.NewGuid().ToString().Substring(0, 12);
+                if (!objConexion.sKey.Equals(""))
+                {
+                    sKey = objConexion.sKey;
+                }
+
+                objConexion.sKey = sKey;
+
                 StringBuilder sb = new StringBuilder();
                 TextWriter tw = new StringWriter(sb);
                 XmlSerializer ser = new XmlSerializer(typeof(Conexion));
@@ -22,7 +29,7 @@ namespace ProcedureUpdater_VH.Metodos
                 tw.Close();
 
                 sXML = sb.ToString();
-                string sKey = Guid.NewGuid().ToString().Substring(0, 12);
+                
                 GuardarXML(sXML, sKey);
 
                 return true;
@@ -30,6 +37,21 @@ namespace ProcedureUpdater_VH.Metodos
             catch
             {
                 return false;
+            }
+        }
+
+        public static bool Eliminar(string sKey)
+        {
+            try
+            {
+                string sPath = "";
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\" + sKey + ".vh";
+                File.Delete(sPath);
+                return true;
+            }
+            catch
+            {
+                throw;
             }
         }
 
@@ -67,8 +89,7 @@ namespace ProcedureUpdater_VH.Metodos
             {
                 string sInformacion = File.ReadAllText(sArchivo);
                 sInformacion = DesEncriptar(sInformacion);
-                //sInformacion = sInformacion.Replace(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "");
-
+                
                 string[] sLineas = sInformacion.Split("\n");
                 sInformacion = "";
                 for (int i = 1; i < sLineas.Length; i++)

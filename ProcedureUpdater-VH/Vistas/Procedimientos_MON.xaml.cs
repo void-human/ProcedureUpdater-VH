@@ -48,6 +48,12 @@ namespace ProcedureUpdater_VH.Vistas
 
             cbx_ConexionV2.SelectedValuePath = "BDD";
             cbx_ConexionV2.DisplayMemberPath = "BDD";
+
+            if (lstConexiones.Count == 0)
+            {
+                Msg.Info("Agregue al menos dos conexiones a base de datos para continuar.");
+                Editar();
+            }
         }
 
         private void BuscarProcedures()
@@ -55,24 +61,63 @@ namespace ProcedureUpdater_VH.Vistas
             ConexionV1 = (Conexion)cbx_ConexionV1.SelectedItem;
             ConexionV2 = (Conexion)cbx_ConexionV2.SelectedItem;
 
-            ejecutor.ObtenerProcedimientos(ConexionV1, ConexionV2);
-            lstProcedimiento = ejecutor.lstProcedimiento;
-            dg_Procedimientos.ItemsSource = lstProcedimiento.OrderBy(x => x.Nombre).ToList();
-            dg_Procedimientos.Items.Refresh();
+            if (ConexionV1 == null)
+            {
+                Msg.Warning("Información Incompleta. No has seleccionado una conexión a base de datos principal.");
+            }
+            else if (ConexionV2 == null)
+            {
+                Msg.Warning("Información Incompleta. No has seleccionado una conexión a base de datos secundaria.");
+            }
+            else
+            {
+                try
+                {
+                    ejecutor.ObtenerProcedimientos(ConexionV1, ConexionV2);
+                    lstProcedimiento = ejecutor.lstProcedimiento;
+                    dg_Procedimientos.ItemsSource = lstProcedimiento;
+                    dg_Procedimientos.Items.Refresh();
+
+                    if (lstProcedimiento.Count == 0)
+                    {
+                        lbl_Resultado.Content = "";
+                        Msg.Info("No se encontrarón procedimientos almacenados desactualizados entre las bases de datos seleccionadas.");
+                    }
+                    else
+                    {
+                        int nModificar = lstProcedimiento.Count(x => !x.Modificar);
+                        lbl_Resultado.Content = String.Format("Por Actualizar: [{0}]   Por Agregar: [{1}]", lstProcedimiento.Count - nModificar, nModificar);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Msg.Error(ex);
+                }
+            }
         }
 
         private void Abrir()
         {
             Procedure procedure = (Procedure)dg_Procedimientos.SelectedItem;
-            Script_VISOR visor = new Script_VISOR(procedure.Nombre, procedure.DefinicionV1, procedure.DefinicionV2);
+            Script_VISOR visor = new Script_VISOR(procedure.Nombre, procedure.DefinicionV1, procedure.DefinicionV2, ConexionV2);
             visor.ShowDialog();
+            if (visor.bActualizo)
+            {
+                int nIndice = lstProcedimiento.FindIndex(x => x.Nombre.Equals(procedure.Nombre));
+                if (nIndice > -1)
+                {
+                    lstProcedimiento.RemoveAt(nIndice);
+                    dg_Procedimientos.ItemsSource = lstProcedimiento;
+                    dg_Procedimientos.Items.Refresh();
+                }
+            }
         }
 
         private void Editar()
         {
-            Conexion_FORM conexion = new Conexion_FORM();
+            Conexion_MON conexion = new Conexion_MON();
             conexion.ShowDialog();
-            if (conexion.bGuardar)
+            if (conexion.bModifico)
             {
                 CargarDatos();
             }

@@ -74,9 +74,7 @@
                 Grid.Row="6"
                 materialDesign:HintAssist.Hint="Dirección IP"
                 materialDesign:HintAssist.IsFloating="True"
-                x:Name="txt_IP"
-                LostFocus="txt_IP_LostFocus"
-                />
+                x:Name="txt_IP"/>
         </Grid>
 
         <Button 

@@ -6,9 +6,10 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
-        Title="Procedimientos_MON" 
+        Title="Procedimientos almacenados desactualizados" 
         Height="450" 
-        Width="800">
+        Width="800"
+        WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -43,6 +44,7 @@
                 <ColumnDefinition Width="180"/>
                 <ColumnDefinition Width="180"/>
                 <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
@@ -73,11 +75,20 @@
                     Foreground="White"/>
             </Button>
 
+            <Label
+                x:Name="lbl_Resultado"
+                Grid.Column="3"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                />
+
             <Button
                 x:Name="btn_Editar"
                 Click="btn_Editar_Click"
                 Width="150"
-                Grid.Column="3"
+                Grid.Column="4"
                 HorizontalAlignment="Right"
                 >
                 <Grid>

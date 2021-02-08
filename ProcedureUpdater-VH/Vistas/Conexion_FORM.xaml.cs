@@ -20,35 +20,73 @@ namespace ProcedureUpdater_VH.Vistas
     {
 
         public bool bGuardar = false;
+        private Conexion conexion = null;
 
-        public Conexion_FORM()
+        public Conexion_FORM(Conexion conexion = null)
         {
             InitializeComponent();
+
+            if (conexion != null)
+            {
+                this.conexion = conexion;
+                txt_BDD.Text = conexion.BDD;
+                txt_Contrasena.Text = getContrasena(conexion.Contrasena);
+                txt_IP.Text = conexion.IP;
+                txt_Usuario.Text = conexion.Usuario;
+            }
+        }
+
+        private string getContrasena(string sContrasena, string sNuevaContrasena = "")
+        {
+            //Asi evitamos mostrar la contraseña actual de la base de datos.
+            if (sNuevaContrasena.Length == sContrasena.Length)
+            {
+                return sNuevaContrasena;
+            }
+            else
+            {
+                sNuevaContrasena += "*";
+                return getContrasena(sContrasena, sNuevaContrasena);
+            }
         }
 
         public void Guardar()
         {
-            Conexion conexion = new Conexion();
-            conexion.BDD = txt_BDD.Text;
-            conexion.Contrasena = txt_Contrasena.Text;
-            conexion.IP = txt_IP.Text;
-            conexion.Usuario = txt_Usuario.Text;
-
-            bGuardar = Conversor.GuardarConexion(conexion);
-            if (bGuardar)
+            bool bRespuesta = Msg.Confirm("¿Estas seguro de que deseas guardar esta conexión?");
+            if (bRespuesta)
             {
-                this.Close();
+                Conexion NuevaConexion = new Conexion();
+                NuevaConexion.BDD = txt_BDD.Text;
+                NuevaConexion.Contrasena = txt_Contrasena.Text;
+                NuevaConexion.IP = txt_IP.Text;
+                NuevaConexion.Usuario = txt_Usuario.Text;
+                NuevaConexion.sKey = "";
+
+                //¿Estamos editando?
+                if (conexion != null)
+                {
+                    //Traemos la ruta de la conexión
+                    NuevaConexion.sKey = conexion.sKey;
+
+                    //Si se estaba editando una conexión existente y no se modifico la contraseña entonces traemos de vuelta la contraseña original.
+                    if (NuevaConexion.Contrasena.Equals(getContrasena(conexion.Contrasena)))
+                    {
+                        NuevaConexion.Contrasena = conexion.Contrasena;
+                    }
+                }
+
+                bGuardar = Conversor.GuardarConexion(NuevaConexion);
+                if (bGuardar)
+                {
+                    Msg.Success("Correcto. La conexión se guardo/actualizo correctamente.");
+                    this.Close();
+                }
             }
         }
 
         private void btn_Guardar_Click(object sender, RoutedEventArgs e)
         {
             Guardar();
-        }
-
-        private void txt_IP_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //txt_IP.Text = Formato.IP(txt_IP.Text); //Validar tambien direcciones web y localhost
         }
     }
 }

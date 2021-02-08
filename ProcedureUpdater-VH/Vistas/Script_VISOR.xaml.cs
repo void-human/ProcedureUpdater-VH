@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ProcedureUpdater_VH.Metodos;
+using ProcedureUpdater_VH.SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,10 +23,15 @@ namespace ProcedureUpdater_VH.Vistas
         private string sScriptV1;
         private string sScriptV2;
         private List<Procedimiento> lstScripts = new List<Procedimiento>();
+        private Conexion ConexionV2;
+        public bool bActualizo;
 
-        public Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2)
+        public Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2, Conexion ConexionV2)
         {
             InitializeComponent();
+
+            bActualizo = false;
+
 
             if (sScriptV1 == null)
             {
@@ -42,10 +49,13 @@ namespace ProcedureUpdater_VH.Vistas
             }
 
 
-            this.Title = sProcedure;
+            this.Title = "Procedimiento Almacenado: "+sProcedure;
+            this.lbl_Titulo.Content += sProcedure;
 
             this.sScriptV1 = sScriptV1;
             this.sScriptV2 = sScriptV2;
+
+            this.ConexionV2 = ConexionV2;
             Convertir();
 
         }
@@ -94,19 +104,40 @@ namespace ProcedureUpdater_VH.Vistas
             dg_Scripts.Items.Refresh();
         }
 
+        private void Actualizar()
+        {
+            if (Msg.Confirm("¿Estas seguro de que deseas actualizar este script?"))
+            {
+                try
+                {
+                    Ejecutor ejecutor = new Ejecutor();
+                    bool bRespuesta = ejecutor.Actualizar(ConexionV2, sScriptV1);
+                    bActualizo = true;
+                    if (bRespuesta)
+                    {
+                        Msg.Success(String.Format("Correcto. El Script se actualizo en la base de datos {0}", ConexionV2.BDD));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Msg.Error(ex);
+                }
+            }
+        }
+
         private void btn_Cerrar_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-       public class Procedimiento
-       {
-            public int Indice { set; get; }
-            public string v1 { set; get; }
-            public string v2 { set; get; }
-            public string sColor { set; get; }
-            public bool bNuevo { set; get; }
-            public bool bRemovido { set; get; }
-       }
+        private void btn_Actualizar_Click(object sender, RoutedEventArgs e)
+        {
+            Actualizar();
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

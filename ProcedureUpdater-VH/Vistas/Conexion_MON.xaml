@@ -1,16 +1,13 @@
-﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Script_VISOR"
+﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Conexion_MON"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
-        Title="Script_VISOR" 
-        Height="450" 
-        Width="500"
-        WindowState="Maximized"
-        WindowStyle="None"
-        MouseDown="Window_MouseDown">
+        Title="Conexiones Existente" 
+        Height="450"
+        Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -29,7 +26,7 @@
         <Grid
             Background="#1F1F1F" Grid.ColumnSpan="3">
             <Label 
-                Content="Comparador de Versiones: "
+                Content="Conexiones"
                 Foreground="White"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -38,7 +35,7 @@
         </Grid>
 
         <DataGrid
-            x:Name="dg_Scripts"
+            x:Name="dg_Conexiones"
             CanUserAddRows="False"
             AutoGenerateColumns="False"
             IsReadOnly="True"
@@ -47,36 +44,27 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn
-                    Header="#"
-                    Binding="{Binding Indice}"
-                    FontWeight="Bold"/>
-
+                    Header="Base de datos"
+                    Binding="{Binding BDD}"/>
                 <DataGridTextColumn
-                    Header="v1"
-                    Binding="{Binding v1}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding bNuevo}" Value="True">
-                                    <Setter Property="Background" Value="#DBF4D8"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                    Header="Dirección"
+                    Binding="{Binding IP}"/>
                 <DataGridTextColumn
-                    Header="v2"
-                    Binding="{Binding v2}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding bRemovido}" Value="True">
-                                    <Setter Property="Background" Value="#FFC3C2"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                    Header="Usuario"
+                    Binding="{Binding Usuario}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                x:Name="btn_Modificar"
+                                Content="Modificar"
+                                Click="btn_Modificar_Click"
+                                Height="35"
+                                Width="120"
+                                />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -86,23 +74,35 @@
             >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions>
 
             <Button
-                x:Name="btn_Actualizar"
-                Content="Actualizar"
-                Click="btn_Actualizar_Click"
+                x:Name="btn_Agregar"
+                Content="Agregar"
+                Grid.Column="0"
+                Click="btn_Agregar_Click"
                 />
 
             <Button
-                x:Name="btn_Cerrar"
+                x:Name="btn_Eliminar"
+                Content="Eliminar"
                 Grid.Column="1"
+                Click="btn_Eliminar_Click"
+                Margin="5,0,0,0"
+                />
+            <Button
+                x:Name="btn_Cerrar"
+                Grid.Column="3"
                 Content="Cerrar"
                 Width="120"
                 HorizontalAlignment="Right"
                 Click="btn_Cerrar_Click"
                 />
         </Grid>
+
+
     </Grid>
 </Window>

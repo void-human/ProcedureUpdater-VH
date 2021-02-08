@@ -94,5 +94,20 @@ namespace ProcedureUpdater_VH.SQL
             }
         }
 
+        public bool Actualizar(Conexion conexion, string Script)
+        {
+            try
+            {
+                Ejecutar(conexion, Script);
+                Comparar();
+                Cerrar();
+                return true;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
     }
 }
