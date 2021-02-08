@@ -20,6 +20,7 @@ namespace ProcedureUpdater_VH.Vistas
     {
 
         public bool bGuardar = false;
+
         private Conexion conexion = null;
 
         public Conexion_FORM(Conexion conexion = null)
@@ -48,6 +49,12 @@ namespace ProcedureUpdater_VH.Vistas
                 sNuevaContrasena += "*";
                 return getContrasena(sContrasena, sNuevaContrasena);
             }
+
+        public Conexion_FORM()
+        {
+            InitializeComponent();
+
+            Conversor.OpenXML();
         }
 
         public void Guardar()
