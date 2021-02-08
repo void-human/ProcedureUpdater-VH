@@ -30,8 +30,40 @@ namespace ProcedureUpdater_VH.Metodos
         public int Indice { set; get; }
         public string v1 { set; get; }
         public string v2 { set; get; }
-        public string sColor { set; get; }
         public bool bNuevo { set; get; }
         public bool bRemovido { set; get; }
+    }
+
+    public class Tabla
+    {
+        public string Nombre { set; get; }
+        public List<Columna> lstColumnas { set; get; }
+    }
+
+    public class Columna
+    {
+        public string Nombre { set; get; }
+        public string Nulo { set; get; }
+        public string Tipo { set; get; }
+        public int Longitud { set; get; }
+        public string Completo { set; get; }
+    }
+
+    public class VersionesColumna
+    {
+        public int Indice { set; get; }
+        public string CompletoV1 { set; get; }
+        public string CompletoV2 { set; get; }
+        public bool bModificacion { set; get; }
+        public bool bNuevo { set; get; }
+        public bool bRemovido { set; get; }
+
+    }
+
+    public class VersionesTabla
+    {
+        public bool bModificar { set; get; }
+        public Tabla TablaV1 { set; get; }
+        public Tabla TablaV2 { set; get; }
     }
 }

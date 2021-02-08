@@ -8,6 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SQL\Script_CreateTable.sql" />
+    <None Remove="SQL\Script_Procedures.sql" />
+    <None Remove="SQL\Script_Tablas.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SQL\Script_CreateTable.sql" />
+    <EmbeddedResource Include="SQL\Script_Procedures.sql" />
+    <EmbeddedResource Include="SQL\Script_Tablas.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>

@@ -1,15 +1,14 @@
-﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Procedimientos_MON"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Tablas_MON"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
-        Title="Procedimientos almacenados desactualizados" 
+        Title="Tablas_MON" 
         Height="450" 
-        Width="800"
-        WindowState="Maximized">
+        Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -32,7 +31,7 @@
         <Grid
             Background="#1F1F1F" Grid.ColumnSpan="3">
             <Label 
-                Content="Procedimientos"
+                Content="Tablas"
                 Foreground="White"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -49,7 +48,7 @@
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <ComboBox
                 x:Name="cbx_ConexionV1"
                 materialDesign:HintAssist.Hint="Conexión v1:"
@@ -116,7 +115,7 @@
             Grid.Column="1"
             materialDesign:HintAssist.Hint="Buscar"
             materialDesign:HintAssist.IsFloating="True"
-            TextChanged="TextBox_TextChanged"
+            TextChanged="txt_Buscar_TextChanged"
             x:Name="txt_Buscar"
             Width="220"
             Margin="10,0,0,0"
@@ -124,21 +123,21 @@
             />
 
         <DataGrid
-            x:Name="dg_Procedimientos"
+            x:Name="dg_Tablas"
             Grid.Row="6"
             Grid.Column="1"
             AutoGenerateColumns="False"
-            CanUserAddRows="False">
-            
-            <DataGrid.Columns>
+            CanUserAddRows="False"
+            IsReadOnly="True">
 
+            <DataGrid.Columns>
                 <DataGridTemplateColumn
                     Header="Actualizar">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
                                 x:Name="cbx_Actualizar"
-                                IsChecked="{Binding Modificar}"
+                                IsChecked="{Binding bModificar}"
                                 IsEnabled="False"
                                 />
                         </DataTemplate>
@@ -147,10 +146,10 @@
 
                 <DataGridTextColumn
                     Header="Nombre"
-                    Binding="{Binding Nombre}"/>
-                
+                    Binding="{Binding TablaV1.Nombre}"/>
+
                 <DataGridTemplateColumn
-                    Header="Scripts">
+                    Header="Columnas">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button
@@ -159,17 +158,13 @@
                                 Height="30"
                                 >
                                 <materialDesign:PackIcon
-                                     Kind="Eye"
+                                    Kind="Eye"
                                     Foreground="White"/>
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-            
             </DataGrid.Columns>
-            
         </DataGrid>
-        
-        
     </Grid>
 </Window>
