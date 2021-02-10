@@ -16,11 +16,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="45"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="40*"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="40"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -91,6 +87,7 @@
                 Width="150"
                 Grid.Column="4"
                 HorizontalAlignment="Right"
+                Visibility="Collapsed"
                 >
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -108,23 +105,22 @@
                 </Grid>
             </Button>
 
-        </Grid>
-
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="1"
+            <TextBox
+            Grid.Row="2"
+            Grid.Column="4"
             materialDesign:HintAssist.Hint="Buscar"
             materialDesign:HintAssist.IsFloating="True"
             TextChanged="txt_Buscar_TextChanged"
             x:Name="txt_Buscar"
             Width="220"
             Margin="10,0,0,0"
-            HorizontalAlignment="Left"
+            HorizontalAlignment="Right"
             />
+        </Grid>
 
         <DataGrid
             x:Name="dg_Tablas"
-            Grid.Row="6"
+            Grid.Row="4"
             Grid.Column="1"
             AutoGenerateColumns="False"
             CanUserAddRows="False"

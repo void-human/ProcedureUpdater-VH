@@ -16,11 +16,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="45"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="40*"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="40"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -48,7 +44,7 @@
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <ComboBox
                 x:Name="cbx_ConexionV1"
                 materialDesign:HintAssist.Hint="Conexión v1:"
@@ -91,6 +87,7 @@
                 Width="150"
                 Grid.Column="4"
                 HorizontalAlignment="Right"
+                Visibility="Collapsed"
                 >
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -107,28 +104,26 @@
                         Grid.Column="1"/>
                 </Grid>
             </Button>
-
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="4"
+                materialDesign:HintAssist.Hint="Buscar"
+                materialDesign:HintAssist.IsFloating="True"
+                TextChanged="TextBox_TextChanged"
+                x:Name="txt_Buscar"
+                Width="220"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Right"
+                />
         </Grid>
-
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="1"
-            materialDesign:HintAssist.Hint="Buscar"
-            materialDesign:HintAssist.IsFloating="True"
-            TextChanged="TextBox_TextChanged"
-            x:Name="txt_Buscar"
-            Width="220"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            />
 
         <DataGrid
             x:Name="dg_Procedimientos"
-            Grid.Row="6"
+            Grid.Row="4"
             Grid.Column="1"
             AutoGenerateColumns="False"
             CanUserAddRows="False">
-            
+
             <DataGrid.Columns>
 
                 <DataGridTemplateColumn
@@ -147,7 +142,7 @@
                 <DataGridTextColumn
                     Header="Nombre"
                     Binding="{Binding Nombre}"/>
-                
+
                 <DataGridTemplateColumn
                     Header="Scripts">
                     <DataGridTemplateColumn.CellTemplate>
@@ -164,11 +159,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-            
             </DataGrid.Columns>
-            
         </DataGrid>
-        
-        
     </Grid>
 </Window>

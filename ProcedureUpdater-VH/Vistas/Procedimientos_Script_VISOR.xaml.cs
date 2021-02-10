@@ -22,11 +22,12 @@ namespace ProcedureUpdater_VH.Vistas
     {
         private string sScriptV1;
         private string sScriptV2;
+        private string sProcedure;
         private List<Procedimiento> lstScripts = new List<Procedimiento>();
         private Conexion ConexionV2;
         public bool bActualizo;
 
-        public Procedimientos_Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2, Conexion ConexionV2)
+        public Procedimientos_Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2, Conexion ConexionV2 = null)
         {
             InitializeComponent();
 
@@ -54,8 +55,14 @@ namespace ProcedureUpdater_VH.Vistas
 
             this.sScriptV1 = sScriptV1;
             this.sScriptV2 = sScriptV2;
+            this.sProcedure = sProcedure;
 
             this.ConexionV2 = ConexionV2;
+
+            if (ConexionV2 == null)
+            {
+                btn_Actualizar.Visibility = Visibility.Hidden;
+            }
             Convertir();
 
         }
@@ -65,6 +72,12 @@ namespace ProcedureUpdater_VH.Vistas
             string[] arrsLineasV1 = sScriptV1.Split("\r\n");
             string[] arrsLineasV2 = sScriptV2.Split("\r\n");
 
+            if (arrsLineasV1.Length == 1)
+            {
+                arrsLineasV1 = sScriptV1.Split("\n");
+                arrsLineasV2 = sScriptV2.Split("\n");
+            }
+
             int nCantidad1 = arrsLineasV1.Count();
             int nCantidad2 = arrsLineasV2.Count();
             int nCantidadMaxima = nCantidad2;
@@ -72,8 +85,6 @@ namespace ProcedureUpdater_VH.Vistas
             {
                 nCantidadMaxima = nCantidad1;
             }
-
-
 
             for (int i = 0; i < nCantidadMaxima; i++)
             {
@@ -118,6 +129,7 @@ namespace ProcedureUpdater_VH.Vistas
                         RespaldoVersion version = new RespaldoVersion();
                         version.BDD = ConexionV2.BDD;
                         version.IP = ConexionV2.IP;
+                        version.Nombre = sProcedure;
                         version.dtActualizacion = DateTime.Now;
                         version.ScriptV1 = sScriptV1;
                         version.ScriptV2 = sScriptV2;

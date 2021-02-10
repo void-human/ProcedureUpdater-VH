@@ -1,12 +1,14 @@
-﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Conexion_MON"
+﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Procedimientos_Backups_MON"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
-        Title="Conexiones Existente" 
-        Height="450"
+        Title="Procedimientos Almacenados - Respaldo Local" 
+        WindowState="Maximized"
+        Height="450" 
         Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -26,7 +28,7 @@
         <Grid
             Background="#1F1F1F" Grid.ColumnSpan="3">
             <Label 
-                Content="Conexiones"
+                Content="Procedimientos Almacenados - Respaldo Local"
                 Foreground="White"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -35,7 +37,7 @@
         </Grid>
 
         <DataGrid
-            x:Name="dg_Conexiones"
+            x:Name="dg_Historial"
             CanUserAddRows="False"
             AutoGenerateColumns="False"
             IsReadOnly="True"
@@ -50,18 +52,25 @@
                     Header="Dirección"
                     Binding="{Binding IP}"/>
                 <DataGridTextColumn
-                    Header="Usuario"
-                    Binding="{Binding Usuario}"/>
-                <DataGridTemplateColumn>
+                    Header="Procedimiento"
+                    Binding="{Binding Nombre}"/>
+                <DataGridTextColumn
+                    Header="Actualización"
+                    Binding="{Binding dtActualizacion}"/>
+                <DataGridTemplateColumn
+                    Header="Scripts">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button
-                                x:Name="btn_Modificar"
-                                Content="Modificar"
-                                Click="btn_Modificar_Click"
+                                x:Name="btn_Ver"
+                                Click="btn_Ver_Click"
                                 Height="35"
-                                Width="120"
-                                />
+                                Width="35"
+                                >
+                                <materialDesign:PackIcon 
+                                    Foreground="White" 
+                                    Kind="Eye"/>
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -78,21 +87,6 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions>
-
-            <Button
-                x:Name="btn_Agregar"
-                Content="Agregar"
-                Grid.Column="0"
-                Click="btn_Agregar_Click"
-                />
-
-            <Button
-                x:Name="btn_Eliminar"
-                Content="Eliminar"
-                Grid.Column="1"
-                Click="btn_Eliminar_Click"
-                Margin="5,0,0,0"
-                />
             <Button
                 x:Name="btn_Cerrar"
                 Grid.Column="3"
@@ -100,10 +94,7 @@
                 Width="120"
                 HorizontalAlignment="Right"
                 Click="btn_Cerrar_Click"
-                Visibility="Collapsed"
                 />
         </Grid>
-
-
     </Grid>
 </Window>

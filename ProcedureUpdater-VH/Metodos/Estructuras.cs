@@ -73,6 +73,7 @@ namespace ProcedureUpdater_VH.Metodos
         public string sKey { set; get; }
         public string BDD { set; get; }
         public string IP { set; get; }
+        public string Nombre { set; get; }
         public string ScriptV1 { set; get; }
         public string ScriptV2 { set; get; }
         public DateTime dtActualizacion { set; get; }

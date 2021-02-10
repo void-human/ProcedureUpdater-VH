@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -93,6 +94,8 @@ namespace ProcedureUpdater_VH.Metodos
                 lstVersiones.Add(version);
             }
 
+            lstVersiones = lstVersiones.OrderBy(x => x.dtActualizacion).ToList();
+
             return lstVersiones;
         }
 
@@ -136,7 +139,7 @@ namespace ProcedureUpdater_VH.Metodos
             try
             {
                 string sPath = "";
-                sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\" + sKey + ".vh";
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\" + sKey + ".cxvh";
                 File.Delete(sPath);
                 return true;
             }
