@@ -1,11 +1,14 @@
-﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Columnas_VISOR"
+﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Tablas_Columnas_VISOR"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
-        Title="Columnas_VISOR" Height="450" Width="800">
+        Title="Columnas_VISOR" 
+        Height="450" 
+        Width="800"
+        WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -72,7 +75,7 @@
                                 <DataTrigger Binding="{Binding bRemovido}" Value="True">
                                     <Setter Property="Background" Value="#FFC3C2"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding bModificacion}" Value="True">
+                                <DataTrigger Binding="{Binding bModificacionV2}" Value="True">
                                     <Setter Property="Background" Value="#fffba6"/>
                                 </DataTrigger>
                             </Style.Triggers>

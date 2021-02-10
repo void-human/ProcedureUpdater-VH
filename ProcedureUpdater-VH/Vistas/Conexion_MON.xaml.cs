@@ -29,7 +29,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         public void CargarConexiones()
         {
-            lstConexiones = Conversor.OpenXML();
+            lstConexiones = Conversor.OpenConexionXML();
             dg_Conexiones.ItemsSource = lstConexiones;
             dg_Conexiones.Items.Refresh();
         }
@@ -67,7 +67,7 @@ namespace ProcedureUpdater_VH.Vistas
                 {
                     try
                     {
-                        if (Conversor.Eliminar(conexion.sKey))
+                        if (Conversor.EliminarConexionXML(conexion.sKey))
                         {
                             bModifico = true;
                             Msg.Success("Correcto. La conexión se elimino correctamente.");

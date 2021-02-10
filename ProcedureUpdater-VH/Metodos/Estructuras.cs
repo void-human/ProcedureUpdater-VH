@@ -55,6 +55,7 @@ namespace ProcedureUpdater_VH.Metodos
         public string CompletoV1 { set; get; }
         public string CompletoV2 { set; get; }
         public bool bModificacion { set; get; }
+        public bool bModificacionV2 { set; get; }
         public bool bNuevo { set; get; }
         public bool bRemovido { set; get; }
 
@@ -66,4 +67,15 @@ namespace ProcedureUpdater_VH.Metodos
         public Tabla TablaV1 { set; get; }
         public Tabla TablaV2 { set; get; }
     }
+
+    public class RespaldoVersion
+    {
+        public string sKey { set; get; }
+        public string BDD { set; get; }
+        public string IP { set; get; }
+        public string ScriptV1 { set; get; }
+        public string ScriptV2 { set; get; }
+        public DateTime dtActualizacion { set; get; }
+    }
+
 }

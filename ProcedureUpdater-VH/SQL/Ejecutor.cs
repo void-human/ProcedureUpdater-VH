@@ -98,7 +98,7 @@ namespace ProcedureUpdater_VH.SQL
             }
         }
 
-        public bool Actualizar(Conexion conexion, string Script)
+        public bool ActualizarConexion(Conexion conexion, string Script, string ScriptV2 = "")
         {
             try
             {

@@ -18,7 +18,7 @@ namespace ProcedureUpdater_VH.Vistas
     /// <summary>
     /// Lógica de interacción para Script_VISOR.xaml
     /// </summary>
-    public partial class Script_VISOR : Window
+    public partial class Procedimientos_Script_VISOR : Window
     {
         private string sScriptV1;
         private string sScriptV2;
@@ -26,7 +26,7 @@ namespace ProcedureUpdater_VH.Vistas
         private Conexion ConexionV2;
         public bool bActualizo;
 
-        public Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2, Conexion ConexionV2)
+        public Procedimientos_Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2, Conexion ConexionV2)
         {
             InitializeComponent();
 
@@ -111,10 +111,19 @@ namespace ProcedureUpdater_VH.Vistas
                 try
                 {
                     Ejecutor ejecutor = new Ejecutor();
-                    bool bRespuesta = ejecutor.Actualizar(ConexionV2, sScriptV1);
+                    bool bRespuesta = ejecutor.ActualizarConexion(ConexionV2, sScriptV1);
                     bActualizo = true;
                     if (bRespuesta)
                     {
+                        RespaldoVersion version = new RespaldoVersion();
+                        version.BDD = ConexionV2.BDD;
+                        version.IP = ConexionV2.IP;
+                        version.dtActualizacion = DateTime.Now;
+                        version.ScriptV1 = sScriptV1;
+                        version.ScriptV2 = sScriptV2;
+                        version.sKey = "";
+                        Conversor.GuardarBackupScript(version);
+
                         Msg.Success(String.Format("Correcto. El Script se actualizo en la base de datos {0}", ConexionV2.BDD));
                     }
                 }

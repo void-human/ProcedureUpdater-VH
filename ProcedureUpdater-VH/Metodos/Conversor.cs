@@ -9,6 +9,97 @@ namespace ProcedureUpdater_VH.Metodos
     public abstract class Conversor
     {
 
+        #region Backups
+        public static bool GuardarBackupScript(RespaldoVersion objVersion)
+        {
+            string sXML = "";
+            try
+            {
+                string sKey = Guid.NewGuid().ToString().Substring(0, 12);
+                if (!objVersion.sKey.Equals(""))
+                {
+                    sKey = objVersion.sKey;
+                }
+
+                objVersion.sKey = sKey;
+
+                StringBuilder sb = new StringBuilder();
+                TextWriter tw = new StringWriter(sb);
+                XmlSerializer ser = new XmlSerializer(typeof(RespaldoVersion));
+                ser.Serialize(tw, objVersion);
+                tw.Close();
+
+                sXML = sb.ToString();
+
+                GuardarBackupScriptXML(sXML, sKey);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static void GuardarBackupScriptXML(string sXML, string sFileKey)
+        {
+            string[] lines = new string[] { Encriptar(sXML) };
+            string sFile = sFileKey;
+
+            string sPath = "";
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\";
+            Directory.CreateDirectory(sPath);
+
+            try
+            {
+                File.WriteAllLines(@sPath + sFile + ".bkvh", lines);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static List<RespaldoVersion> OpenBackupScriptXML()
+        {
+            List<RespaldoVersion> lstVersiones = new List<RespaldoVersion>();
+
+            string sPath = "";
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\";
+            Directory.CreateDirectory(sPath);
+
+            string[] files = Directory.GetFiles(sPath, "*.bkvh");
+
+            foreach (string sArchivo in files)
+            {
+                string sInformacion = File.ReadAllText(sArchivo);
+                sInformacion = DesEncriptar(sInformacion);
+
+                string[] sLineas = sInformacion.Split("\n");
+                sInformacion = "";
+                for (int i = 1; i < sLineas.Length; i++)
+                {
+                    sInformacion += sLineas[i];
+                }
+
+                var stream = new MemoryStream();
+                var writer = new StreamWriter(stream);
+                writer.Write(sInformacion);
+                writer.Flush();
+                stream.Position = 0;
+                XmlSerializer ser = new XmlSerializer(typeof(RespaldoVersion));
+                RespaldoVersion version = (RespaldoVersion)ser.Deserialize(stream);
+
+                lstVersiones.Add(version);
+            }
+
+            return lstVersiones;
+        }
+
+        #endregion 
+
+        #region Conexion
+
         public static bool GuardarConexion(Conexion objConexion)
         {
             string sXML = "";
@@ -29,8 +120,8 @@ namespace ProcedureUpdater_VH.Metodos
                 tw.Close();
 
                 sXML = sb.ToString();
-                
-                GuardarXML(sXML, sKey);
+
+                GuardarConexionXML(sXML, sKey);
 
                 return true;
             }
@@ -40,7 +131,7 @@ namespace ProcedureUpdater_VH.Metodos
             }
         }
 
-        public static bool Eliminar(string sKey)
+        public static bool EliminarConexionXML(string sKey)
         {
             try
             {
@@ -55,7 +146,7 @@ namespace ProcedureUpdater_VH.Metodos
             }
         }
 
-        public static void GuardarXML(string sXML, string sFileKey)
+        private static void GuardarConexionXML(string sXML, string sFileKey)
         {
             string[] lines = new string[] { Encriptar(sXML) };
             string sFile = sFileKey;
@@ -66,16 +157,15 @@ namespace ProcedureUpdater_VH.Metodos
 
             try
             {
-                File.WriteAllLines(@sPath + sFile + ".vh", lines);
+                File.WriteAllLines(@sPath + sFile + ".cxvh", lines);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-
         }
 
-        public static List<Conexion> OpenXML()
+        public static List<Conexion> OpenConexionXML()
         {
             List<Conexion> lstConexiones = new List<Conexion>();
 
@@ -83,7 +173,7 @@ namespace ProcedureUpdater_VH.Metodos
             sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
             Directory.CreateDirectory(sPath);
 
-            string[] files = Directory.GetFiles(sPath, "*.vh");
+            string[] files = Directory.GetFiles(sPath, "*.cxvh");
             
             foreach (string sArchivo in files)
             {
@@ -111,7 +201,9 @@ namespace ProcedureUpdater_VH.Metodos
             return lstConexiones;
         }
 
-        public static string Encriptar(string sValor)
+        #endregion
+
+        private static string Encriptar(string sValor)
         {
             string result = string.Empty;
             byte[] encryted = Encoding.Unicode.GetBytes(sValor);
@@ -119,7 +211,7 @@ namespace ProcedureUpdater_VH.Metodos
             return result;
         }
 
-        public static string DesEncriptar(string sValor)
+        private static string DesEncriptar(string sValor)
         {
             string result = string.Empty;
             byte[] decryted = Convert.FromBase64String(sValor);

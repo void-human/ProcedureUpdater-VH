@@ -3,7 +3,7 @@ IF OBJECT_ID ('dbo.@Tabla') IS NOT NULL
 GO
 
 CREATE TABLE dbo.@Tabla
-	(
-	  @Script
-	)
+(
+	@Script
+)
 GO

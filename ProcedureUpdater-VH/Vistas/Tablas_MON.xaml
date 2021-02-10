@@ -6,9 +6,10 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
-        Title="Tablas_MON" 
+        Title="Tablas desactualizadas" 
         Height="450" 
-        Width="800">
+        Width="800"
+        WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -45,7 +46,6 @@
                 <ColumnDefinition Width="180"/>
                 <ColumnDefinition Width="180"/>
                 <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 

@@ -53,12 +53,16 @@ namespace ProcedureUpdater_VH.SQL
 
                 if (i == 0)
                 {
-                    sPropiedades += "     " + sLinea + "\n\r";
+                    sPropiedades += sLinea + "\n";
                 }
-                else
+                else if(i == arrsPropiedades.Length-1)
                 {
-                    sPropiedades += "   , " + sLinea + "\n\r";
+                    sPropiedades += "           , " + sLinea;
                 }
+                else 
+                {
+                    sPropiedades += "           , " + sLinea + "\n";
+                }       
             
             }
 

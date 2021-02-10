@@ -36,7 +36,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void CargarDatos()
         {
-            lstConexiones = Conversor.OpenXML();
+            lstConexiones = Conversor.OpenConexionXML();
 
             cbx_ConexionV1.ItemsSource = lstConexiones;
             cbx_ConexionV2.ItemsSource = lstConexiones;
@@ -108,7 +108,7 @@ namespace ProcedureUpdater_VH.Vistas
         private void Abrir()
         {
             Procedure procedure = (Procedure)dg_Procedimientos.SelectedItem;
-            Script_VISOR visor = new Script_VISOR(procedure.Nombre, procedure.DefinicionV1, procedure.DefinicionV2, ConexionV2);
+            Procedimientos_Script_VISOR visor = new Procedimientos_Script_VISOR(procedure.Nombre, procedure.DefinicionV1, procedure.DefinicionV2, ConexionV2);
             visor.ShowDialog();
             if (visor.bActualizo)
             {

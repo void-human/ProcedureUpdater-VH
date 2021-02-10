@@ -30,7 +30,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void CargarDatos()
         {
-            lstConexiones = Conversor.OpenXML();
+            lstConexiones = Conversor.OpenConexionXML();
 
             cbx_ConexionV1.ItemsSource = lstConexiones;
             cbx_ConexionV2.ItemsSource = lstConexiones;
@@ -105,7 +105,7 @@ namespace ProcedureUpdater_VH.Vistas
         public void AbrirColumnas()
         {
             VersionesTabla version = (VersionesTabla)dg_Tablas.SelectedItem;
-            Columnas_VISOR visor = new Columnas_VISOR(version.TablaV1.Nombre, version.TablaV1.lstColumnas, version.TablaV2.lstColumnas, ConexionV2);
+            Tablas_Columnas_VISOR visor = new Tablas_Columnas_VISOR(version.TablaV1.Nombre, version.TablaV1.lstColumnas, version.TablaV2.lstColumnas, ConexionV2);
             visor.ShowDialog();
             if (visor.bModifico)
             {
