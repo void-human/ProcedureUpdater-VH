@@ -137,6 +137,12 @@ namespace ProcedureUpdater_VH.Vistas
                         Conversor.GuardarBackupScript(version);
 
                         Msg.Success(String.Format("Correcto. El Script se actualizo en la base de datos {0}", ConexionV2.BDD));
+
+                        bRespuesta = Msg.Confirm("¿Deseas generar/guardar un documento \"*.SQL\" con el código actualizado?");
+                        if (bRespuesta)
+                        {
+                            Conversor.GuardarSQL(sProcedure, sScriptV1);
+                        }
                     }
                 }
                 catch (Exception ex)

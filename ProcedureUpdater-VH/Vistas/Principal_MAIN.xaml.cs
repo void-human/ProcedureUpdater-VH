@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +22,11 @@ namespace ProcedureUpdater_VH.Vistas
         public Principal_MAIN()
         {
             InitializeComponent();
+
+            var assembly = Assembly.GetExecutingAssembly();
+            string[] rutas = assembly.GetManifestResourceNames();
+            Stream stream = assembly.GetManifestResourceStream("ProcedureUpdater_VH.Vistas.program.ico");
+            this.Icon = BitmapFrame.Create(stream);
         }
 
         private void btn_procedimientos_Click(object sender, RoutedEventArgs e)

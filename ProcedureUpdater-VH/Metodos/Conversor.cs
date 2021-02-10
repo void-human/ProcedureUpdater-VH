@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -205,6 +206,26 @@ namespace ProcedureUpdater_VH.Metodos
         }
 
         #endregion
+        
+        public static void GuardarSQL(string sProcedure, string sScript)
+        {
+            try
+            {
+                string[] lines = sScript.Split("\n\r");
+
+                SaveFileDialog sfdGuardado = new SaveFileDialog();
+                sfdGuardado.FileName = sProcedure;
+                sfdGuardado.Filter = "SQL (*.sql)|*.sql";
+                sfdGuardado.ShowDialog();
+                string sFile = sfdGuardado.FileName;
+
+                File.WriteAllLines(sFile + ".sql", lines);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
 
         private static string Encriptar(string sValor)
         {
