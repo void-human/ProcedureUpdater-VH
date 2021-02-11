@@ -79,4 +79,23 @@ namespace ProcedureUpdater_VH.Metodos
         public DateTime dtActualizacion { set; get; }
     }
 
+    public class Configuracion
+    {
+        public string BDD { set; get;}
+        public string IP { set; get; }
+        public string Direccion { set; get; }
+        public bool UsarDireccion { set { UsarDireccion = value; }  get { return getUsarDireccion(); } }
+    
+        private bool getUsarDireccion()
+        {
+            if(Direccion != null && !Direccion.Equals("")){
+                return this.UsarDireccion;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
 }
