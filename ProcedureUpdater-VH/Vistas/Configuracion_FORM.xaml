@@ -129,7 +129,6 @@
                 x:Name="btn_Guardar"
                 Content="Guardar"
                 Background="#1F1F1F"
-                Click="btn_Guardar_Click"
                 Margin="20,0,0,0"
                 Width="120"/>
         </StackPanel>
