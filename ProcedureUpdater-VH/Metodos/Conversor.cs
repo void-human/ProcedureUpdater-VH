@@ -33,7 +33,7 @@ namespace ProcedureUpdater_VH.Metodos
 
                 sXML = sb.ToString();
 
-                GuardarBackupScriptXML(sXML, sKey);
+                GenerarBackupScriptXML(sXML, sKey);
 
                 return true;
             }
@@ -43,7 +43,7 @@ namespace ProcedureUpdater_VH.Metodos
             }
         }
 
-        private static void GuardarBackupScriptXML(string sXML, string sFileKey)
+        private static void GenerarBackupScriptXML(string sXML, string sFileKey)
         {
             string[] lines = new string[] { Encriptar(sXML) };
             string sFile = sFileKey;
@@ -62,7 +62,7 @@ namespace ProcedureUpdater_VH.Metodos
             }
         }
 
-        public static List<RespaldoVersion> OpenBackupScriptXML()
+        public static List<RespaldoVersion> AbrirBackupScriptXML()
         {
             List<RespaldoVersion> lstVersiones = new List<RespaldoVersion>();
 
@@ -125,7 +125,7 @@ namespace ProcedureUpdater_VH.Metodos
 
                 sXML = sb.ToString();
 
-                GuardarConexionXML(sXML, sKey);
+                GenerarConexionXML(sXML, sKey);
 
                 return true;
             }
@@ -150,7 +150,7 @@ namespace ProcedureUpdater_VH.Metodos
             }
         }
 
-        private static void GuardarConexionXML(string sXML, string sFileKey)
+        private static void GenerarConexionXML(string sXML, string sFileKey)
         {
             string[] lines = new string[] { Encriptar(sXML) };
             string sFile = sFileKey;
@@ -169,7 +169,7 @@ namespace ProcedureUpdater_VH.Metodos
             }
         }
 
-        public static List<Conexion> OpenConexionXML()
+        public static List<Conexion> AbrirConexionXML()
         {
             List<Conexion> lstConexiones = new List<Conexion>();
 
@@ -206,7 +206,83 @@ namespace ProcedureUpdater_VH.Metodos
         }
 
         #endregion
-        
+
+        #region Configuracion
+        public static void GuardarConfiguracion(Configuracion configuracion)
+        {
+            string sXML = "";
+
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                TextWriter tw = new StringWriter(sb);
+                XmlSerializer ser = new XmlSerializer(typeof(Configuracion));
+                ser.Serialize(tw, configuracion);
+                tw.Close();
+
+                sXML = sb.ToString();
+
+                GenerarConfiguracionXML(sXML);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private static void GenerarConfiguracionXML(string sXML)
+        {
+            string[] lines = new string[] { Encriptar(sXML) };
+
+            string sPath = "";
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            Directory.CreateDirectory(sPath);
+
+            try
+            {
+                File.WriteAllLines(@sPath + "config.cfvh", lines);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static Configuracion AbrirConfiguracionXML()
+        {
+            Configuracion configuracion = new Configuracion();
+
+            string sPath = "";
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            Directory.CreateDirectory(sPath);
+
+            string[] files = Directory.GetFiles(sPath, "*.cfvh");
+
+            foreach (string sArchivo in files)
+            {
+                string sInformacion = File.ReadAllText(sArchivo);
+                sInformacion = DesEncriptar(sInformacion);
+
+                string[] sLineas = sInformacion.Split("\n");
+                sInformacion = "";
+                for (int i = 1; i < sLineas.Length; i++)
+                {
+                    sInformacion += sLineas[i];
+                }
+
+                var stream = new MemoryStream();
+                var writer = new StreamWriter(stream);
+                writer.Write(sInformacion);
+                writer.Flush();
+                stream.Position = 0;
+                XmlSerializer ser = new XmlSerializer(typeof(Configuracion));
+                configuracion = (Configuracion)ser.Deserialize(stream);
+            }
+
+            return configuracion;
+        }
+        #endregion
+
         public static void GuardarSQL(string sProcedure, string sScript)
         {
             try

@@ -29,7 +29,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         public void CargarConexiones()
         {
-            lstConexiones = Conversor.OpenConexionXML();
+            lstConexiones = Conversor.AbrirConexionXML();
             dg_Conexiones.ItemsSource = lstConexiones;
             dg_Conexiones.Items.Refresh();
         }

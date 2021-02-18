@@ -22,9 +22,9 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="20*"/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="560"/>
+            <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
 
         <Grid
@@ -70,12 +70,14 @@
                     Grid.Column="0"
                     materialDesign:HintAssist.Hint="Directorio"
                     materialDesign:HintAssist.IsFloating="True"
+                    IsReadOnly="True"
                     x:Name="txt_Directorio"
                     />
                 <Button
                     Grid.Column="2"
                     x:Name="btn_Seleccionar"
-                    Content="Seleccionar"     
+                    Content="Buscar"     
+                    Click="btn_Seleccionar_Click"
                     />
             </Grid>
 
@@ -83,6 +85,7 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Content="Utilizar el directorio por defecto y no preguntar."
+                x:Name="cbx_usar_directorio"
                 />
 
             <Label
@@ -130,6 +133,7 @@
                 Content="Guardar"
                 Background="#1F1F1F"
                 Margin="20,0,0,0"
+                Click="btn_Guardar_Click"
                 Width="120"/>
         </StackPanel>
     </Grid>

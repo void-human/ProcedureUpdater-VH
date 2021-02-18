@@ -84,7 +84,7 @@ namespace ProcedureUpdater_VH.Metodos
         public string BDD { set; get;}
         public string IP { set; get; }
         public string Direccion { set; get; }
-        public bool UsarDireccion { set { UsarDireccion = value; }  get { return getUsarDireccion(); } }
+        public bool UsarDireccion { set; get; }
     
         private bool getUsarDireccion()
         {

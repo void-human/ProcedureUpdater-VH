@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>ProcedureUpdater_VH</RootNamespace>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Vistas\program.ico</ApplicationIcon>
+    <ApplicationIcon>Recursos\program.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +19,7 @@
     <EmbeddedResource Include="SQL\Script_CreateTable.sql" />
     <EmbeddedResource Include="SQL\Script_Procedures.sql" />
     <EmbeddedResource Include="SQL\Script_Tablas.sql" />
-    <EmbeddedResource Include="Vistas\program.ico" />
+    <EmbeddedResource Include="Recursos\program.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -36,7 +36,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void CargarDatos()
         {
-            lstConexiones = Conversor.OpenConexionXML();
+            lstConexiones = Conversor.AbrirConexionXML();
 
             cbx_ConexionV1.ItemsSource = lstConexiones;
             cbx_ConexionV2.ItemsSource = lstConexiones;

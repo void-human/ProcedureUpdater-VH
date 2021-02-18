@@ -22,11 +22,6 @@ namespace ProcedureUpdater_VH.Vistas
         public Principal_MAIN()
         {
             InitializeComponent();
-
-            var assembly = Assembly.GetExecutingAssembly();
-            string[] rutas = assembly.GetManifestResourceNames();
-            Stream stream = assembly.GetManifestResourceStream("ProcedureUpdater_VH.Vistas.program.ico");
-            this.Icon = BitmapFrame.Create(stream);
         }
 
         private void btn_procedimientos_Click(object sender, RoutedEventArgs e)

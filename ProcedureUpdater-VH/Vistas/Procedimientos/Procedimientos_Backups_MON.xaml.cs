@@ -28,7 +28,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         public void CargarDatos()
         {
-            lstVersiones = Conversor.OpenBackupScriptXML();
+            lstVersiones = Conversor.AbrirBackupScriptXML();
             dg_Historial.ItemsSource = lstVersiones;
             dg_Historial.Items.Refresh();
         }
