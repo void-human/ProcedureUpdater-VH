@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcedureUpdater_VH.Vistas.Global;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -22,30 +23,15 @@ namespace ProcedureUpdater_VH.Vistas
         public Principal_MAIN()
         {
             InitializeComponent();
+            MostrarMenu();
         }
 
-        private void btn_procedimientos_Click(object sender, RoutedEventArgs e)
+        public void MostrarMenu()
         {
-            Procedimientos_MON mon = new Procedimientos_MON();
-            mon.ShowDialog();
+            Menu_VISOR menu = new Menu_VISOR();
+            frm_Principal.Navigate(menu);
         }
 
-        private void btn_tablas_Click(object sender, RoutedEventArgs e)
-        {
-            Tablas_MON mon = new Tablas_MON();
-            mon.ShowDialog();
-        }
-
-        private void btn_respaldos_Click(object sender, RoutedEventArgs e)
-        {
-            Procedimientos_Backups_MON mon = new Procedimientos_Backups_MON();
-            mon.ShowDialog();
-        }
-
-        private void btn_conexiones_Click(object sender, RoutedEventArgs e)
-        {
-            Conexion_MON mon = new Conexion_MON();
-            mon.ShowDialog();
-        }
+       
     }
 }

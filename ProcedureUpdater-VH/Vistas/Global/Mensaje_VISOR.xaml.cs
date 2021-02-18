@@ -55,6 +55,8 @@ namespace ProcedureUpdater_VH.Vistas
                     lbl_Titulo.Content = "Confirmar";
                     break;
             }
+
+            FocusManager.SetFocusedElement(this, btn_Aceptar);
         }
 
         private Brush getColor(string sColor)
@@ -85,6 +87,20 @@ namespace ProcedureUpdater_VH.Vistas
             catch
             {
 
+            }
+        }
+
+        private void btn_Aceptar_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Escape))
+            {
+                bRespuesta = false;
+                Close();
+            }
+            else if (e.Key.Equals(Key.Enter))
+            {
+                bRespuesta = true;
+                Close();
             }
         }
     }

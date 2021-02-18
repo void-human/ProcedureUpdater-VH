@@ -12,6 +12,7 @@
     <None Remove="SQL\Script_CreateTable.sql" />
     <None Remove="SQL\Script_Procedures.sql" />
     <None Remove="SQL\Script_Tablas.sql" />
+    <None Remove="Vistas\Procedimientos\Procedimientos_Script_VISOR.xaml.cs~RFac382c4.TMP" />
     <None Remove="Vistas\program.ico" />
   </ItemGroup>
 

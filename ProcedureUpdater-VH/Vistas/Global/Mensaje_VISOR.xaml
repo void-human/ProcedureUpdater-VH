@@ -69,6 +69,7 @@
                 x:Name="btn_Aceptar"
                 Background="DarkGreen"
                 Click="btn_Aceptar_Click"
+                KeyUp="btn_Aceptar_KeyUp"
                 />
             <Button
                 Width="120"

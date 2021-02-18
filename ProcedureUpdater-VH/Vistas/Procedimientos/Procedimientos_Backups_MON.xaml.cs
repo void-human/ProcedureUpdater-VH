@@ -16,7 +16,7 @@ namespace ProcedureUpdater_VH.Vistas
     /// <summary>
     /// Lógica de interacción para Procedimientos_Backups_MON.xaml
     /// </summary>
-    public partial class Procedimientos_Backups_MON : Window
+    public partial class Procedimientos_Backups_MON : Page
     {
         List<RespaldoVersion> lstVersiones = null;
 
@@ -37,7 +37,7 @@ namespace ProcedureUpdater_VH.Vistas
         {
             RespaldoVersion version = (RespaldoVersion)dg_Historial.SelectedItem;
             Procedimientos_Script_VISOR visor = new Procedimientos_Script_VISOR(version.Nombre, version.ScriptV1, version.ScriptV2);
-            visor.ShowDialog();
+            this.NavigationService.Navigate(visor);
         }
 
         private void btn_Ver_Click(object sender, RoutedEventArgs e)
@@ -47,7 +47,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void btn_Cerrar_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            this.NavigationService.GoBack();
         }
     }
 }

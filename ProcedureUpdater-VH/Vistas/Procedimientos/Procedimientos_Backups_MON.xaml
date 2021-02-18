@@ -1,4 +1,4 @@
-﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Procedimientos_Backups_MON"
+﻿<Page x:Class="ProcedureUpdater_VH.Vistas.Procedimientos_Backups_MON"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,9 +7,8 @@
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
         Title="Procedimientos Almacenados - Respaldo Local" 
-        WindowState="Maximized"
-        Height="450" 
-        Width="800">
+        d:Height="450" 
+        d:Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -90,11 +89,15 @@
             <Button
                 x:Name="btn_Cerrar"
                 Grid.Column="3"
-                Content="Cerrar"
+                Content="Volver"
+                Foreground="Black"
+                Background="WhiteSmoke"
                 Width="120"
+                BorderBrush="Black"
+                BorderThickness="1"
                 HorizontalAlignment="Right"
                 Click="btn_Cerrar_Click"
                 />
         </Grid>
     </Grid>
-</Window>
+</Page>

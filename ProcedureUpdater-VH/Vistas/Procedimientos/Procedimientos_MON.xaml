@@ -1,4 +1,4 @@
-﻿<Window x:Class="ProcedureUpdater_VH.Vistas.Procedimientos_MON"
+﻿<Page x:Class="ProcedureUpdater_VH.Vistas.Procedimientos_MON"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,9 +7,8 @@
         xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
         mc:Ignorable="d"
         Title="Procedimientos almacenados desactualizados" 
-        Height="450" 
-        Width="800"
-        WindowState="Maximized">
+        d:Height="450" 
+        d:Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -17,6 +16,8 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="40*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -161,5 +162,18 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button 
+            Grid.Column="1"
+            Grid.Row="6"
+            Foreground="Black"
+            Background="WhiteSmoke"
+            Width="120"
+            BorderBrush="Black"
+            BorderThickness="1"
+            HorizontalAlignment="Right"
+            x:Name="btn_volver"
+            Click="btn_volver_Click"
+            Content="Volver"
+            />
     </Grid>
-</Window>
+</Page>

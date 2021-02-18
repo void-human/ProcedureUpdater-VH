@@ -18,7 +18,7 @@ namespace ProcedureUpdater_VH.Vistas
     /// <summary>
     /// Lógica de interacción para Script_VISOR.xaml
     /// </summary>
-    public partial class Procedimientos_Script_VISOR : Window
+    public partial class Procedimientos_Script_VISOR : Page
     {
         private string sScriptV1;
         private string sScriptV2;
@@ -26,6 +26,8 @@ namespace ProcedureUpdater_VH.Vistas
         private List<Procedimiento> lstScripts = new List<Procedimiento>();
         private Conexion ConexionV2;
         public bool bActualizo;
+        private string sPath = "";
+        private bool bUsarDireccion = false;
 
         public Procedimientos_Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2, Conexion ConexionV2 = null)
         {
@@ -64,7 +66,17 @@ namespace ProcedureUpdater_VH.Vistas
                 btn_Actualizar.Visibility = Visibility.Hidden;
             }
             Convertir();
+            Configuracion();
+        }
 
+        private void Configuracion()
+        {
+            Configuracion configuracion = Conversor.AbrirConfiguracionXML();
+            if (configuracion != null)
+            {
+                sPath = configuracion.Direccion;
+                bUsarDireccion = configuracion.UsarDireccion;
+            }
         }
 
         public void Convertir()
@@ -138,11 +150,19 @@ namespace ProcedureUpdater_VH.Vistas
 
                         Msg.Success(String.Format("Correcto. El Script se actualizo en la base de datos {0}", ConexionV2.BDD));
 
-                        bRespuesta = Msg.Confirm("¿Deseas generar/guardar un documento \"*.SQL\" con el código actualizado?");
-                        if (bRespuesta)
+                        if (!bUsarDireccion)
                         {
-                            Conversor.GuardarSQL(sProcedure, sScriptV1);
+                            bRespuesta = Msg.Confirm("¿Deseas generar/guardar un documento \"*.SQL\" con el código actualizado?");
+                            if (bRespuesta)
+                            {
+                                Conversor.GuardarSQL(sProcedure, sScriptV1, sPath, bUsarDireccion);
+                            }
                         }
+                        else
+                        {
+                            Conversor.GuardarSQL(sProcedure, sScriptV1, sPath, bUsarDireccion);
+                        }
+                        
                     }
                 }
                 catch (Exception ex)
@@ -154,17 +174,12 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void btn_Cerrar_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.NavigationService.GoBack();
         }
 
         private void btn_Actualizar_Click(object sender, RoutedEventArgs e)
         {
             Actualizar();
-        }
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
     }
 }

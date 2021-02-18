@@ -119,22 +119,19 @@
             Grid.Row="4"
             Grid.Column="1"
             HorizontalAlignment="Right"
+            Grid.ColumnSpan="3"
+            Margin="0,0,20,0"
             Orientation="Horizontal">
             <Button
                 x:Name="btn_Cancelar"
-                Content="Cancelar"
+                Content="Volver"
+                Click="btn_Cancelar_Click"
                 Foreground="Black"
                 Background="WhiteSmoke"
-                Click="btn_Cancelar_Click"
                 Width="120"
+                BorderBrush="Black"
+                BorderThickness="1"
                 />
-            <Button 
-                x:Name="btn_Guardar"
-                Content="Guardar"
-                Background="#1F1F1F"
-                Margin="20,0,0,0"
-                Click="btn_Guardar_Click"
-                Width="120"/>
         </StackPanel>
     </Grid>
 </Page>

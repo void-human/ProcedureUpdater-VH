@@ -81,8 +81,8 @@ namespace ProcedureUpdater_VH.Metodos
 
     public class Configuracion
     {
-        public string BDD { set; get;}
-        public string IP { set; get; }
+        public string sKey2 { set; get;}
+        public string sKey1 { set; get; }
         public string Direccion { set; get; }
         public bool UsarDireccion { set; get; }
     

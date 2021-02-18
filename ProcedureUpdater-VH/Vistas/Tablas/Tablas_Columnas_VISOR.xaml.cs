@@ -18,7 +18,7 @@ namespace ProcedureUpdater_VH.Vistas
     /// <summary>
     /// Lógica de interacción para Columnas_VISOR.xaml
     /// </summary>
-    public partial class Tablas_Columnas_VISOR : Window
+    public partial class Tablas_Columnas_VISOR : Page
     {
         private List<Columna> lstColumnasV1 = null;
         private List<Columna> lstColumnasV2 = null;
@@ -139,7 +139,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void btn_Cerrar_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            this.NavigationService.GoBack();
         }
     }
 }

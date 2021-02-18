@@ -12,7 +12,7 @@ namespace ProcedureUpdater_VH.Vistas
     /// <summary>
     /// Lógica de interacción para Tablas_MON.xaml
     /// </summary>
-    public partial class Tablas_MON : Window
+    public partial class Tablas_MON : Page
     {
         private List<VersionesTabla> lstVersionesTablas = null;
         private List<VersionesTabla> lstVersionesTablasBusqueda = null;
@@ -26,6 +26,21 @@ namespace ProcedureUpdater_VH.Vistas
         {
             InitializeComponent();
             CargarDatos();
+            Configuracion();
+        }
+
+        private void Configuracion()
+        {
+            Configuracion configuracion = Conversor.AbrirConfiguracionXML();
+            if (configuracion != null && configuracion.sKey1 != null)
+            {
+                cbx_ConexionV1.SelectedValue = configuracion.sKey1;
+            }
+
+            if (configuracion != null && configuracion.sKey2 != null)
+            {
+                cbx_ConexionV2.SelectedValue = configuracion.sKey2;
+            }
         }
 
         private void CargarDatos()
@@ -38,10 +53,10 @@ namespace ProcedureUpdater_VH.Vistas
             cbx_ConexionV1.Items.Refresh();
             cbx_ConexionV2.Items.Refresh();
 
-            cbx_ConexionV1.SelectedValuePath = "BDD";
+            cbx_ConexionV1.SelectedValuePath = "sKey";
             cbx_ConexionV1.DisplayMemberPath = "BDD";
 
-            cbx_ConexionV2.SelectedValuePath = "BDD";
+            cbx_ConexionV2.SelectedValuePath = "sKey";
             cbx_ConexionV2.DisplayMemberPath = "BDD";
 
             if (lstConexiones.Count == 0)
@@ -53,7 +68,7 @@ namespace ProcedureUpdater_VH.Vistas
         private void Editar()
         {
             Conexion_MON conexion = new Conexion_MON();
-            conexion.ShowDialog();
+            this.NavigationService.Navigate(conexion);
             if (conexion.bModifico)
             {
                 CargarDatos();
@@ -106,7 +121,7 @@ namespace ProcedureUpdater_VH.Vistas
         {
             VersionesTabla version = (VersionesTabla)dg_Tablas.SelectedItem;
             Tablas_Columnas_VISOR visor = new Tablas_Columnas_VISOR(version.TablaV1.Nombre, version.TablaV1.lstColumnas, version.TablaV2.lstColumnas, ConexionV2);
-            visor.ShowDialog();
+            this.NavigationService.Navigate(visor);
             if (visor.bModifico)
             {
                 BuscarVersionesTablas();
@@ -131,6 +146,11 @@ namespace ProcedureUpdater_VH.Vistas
         private void btn_AbrirV1_Click(object sender, RoutedEventArgs e)
         {
             AbrirColumnas();
+        }
+
+        private void btn_volver_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.GoBack();
         }
     }
 }

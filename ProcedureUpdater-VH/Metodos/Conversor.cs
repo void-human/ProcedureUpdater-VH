@@ -283,17 +283,27 @@ namespace ProcedureUpdater_VH.Metodos
         }
         #endregion
 
-        public static void GuardarSQL(string sProcedure, string sScript)
+        public static void GuardarSQL(string sProcedure, string sScript, string sPath, bool bUsar)
         {
             try
             {
+                string sFile = "";
+
+
                 string[] lines = sScript.Split("\n\r");
 
-                SaveFileDialog sfdGuardado = new SaveFileDialog();
-                sfdGuardado.FileName = sProcedure;
-                sfdGuardado.Filter = "SQL (*.sql)|*.sql";
-                sfdGuardado.ShowDialog();
-                string sFile = sfdGuardado.FileName;
+                if (!bUsar)
+                {
+                    SaveFileDialog sfdGuardado = new SaveFileDialog();
+                    sfdGuardado.FileName = sPath+sProcedure;
+                    sfdGuardado.Filter = "SQL (*.sql)|*.sql";
+                    sfdGuardado.ShowDialog();
+                    sFile = sfdGuardado.FileName;
+                }
+                else
+                {
+                    sFile = sPath + sProcedure;
+                }
 
                 File.WriteAllLines(sFile + ".sql", lines);
             }

@@ -16,7 +16,7 @@ namespace ProcedureUpdater_VH.Vistas
     /// <summary>
     /// Lógica de interacción para Conexion_MON.xaml
     /// </summary>
-    public partial class Conexion_MON : Window
+    public partial class Conexion_MON : Page
     {
         public bool bModifico = false;
         private List<Conexion> lstConexiones = new List<Conexion>();
@@ -105,7 +105,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void btn_Cerrar_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            this.NavigationService.GoBack();
         }
     }
 }
