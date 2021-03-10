@@ -43,7 +43,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="45"/>
                 <RowDefinition Height="10"/>
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="40"/>
@@ -76,7 +76,7 @@
                 <Button
                     Grid.Column="2"
                     x:Name="btn_Seleccionar"
-                    Content="Buscar"     
+                    Content="Seleccionar"     
                     Click="btn_Seleccionar_Click"
                     />
             </Grid>
@@ -86,6 +86,13 @@
                 Grid.Column="1"
                 Content="Utilizar el directorio por defecto y no preguntar."
                 x:Name="cbx_usar_directorio"
+                />            
+            
+            <CheckBox
+                Grid.Row="5"
+                Grid.Column="1"
+                Content="Utilizar el modo ''Conexión por pasos''."
+                x:Name="cbx_conexion_unica"
                 />
 
             <Label

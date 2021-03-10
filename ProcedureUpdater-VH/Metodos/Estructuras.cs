@@ -85,6 +85,7 @@ namespace ProcedureUpdater_VH.Metodos
         public string sKey1 { set; get; }
         public string Direccion { set; get; }
         public bool UsarDireccion { set; get; }
+        public bool UsarPasos { set; get; }
     
         private bool getUsarDireccion()
         {

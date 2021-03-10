@@ -55,6 +55,31 @@ namespace ProcedureUpdater_VH.SQL
             }
         }
 
+        public void ObtenerProcedimientosPasos(Conexion ConexionV1, Conexion ConexionV2, bool bPrimerPaso)
+        {
+            try
+            {
+                lstProcedimiento = new List<Procedure>();
+
+                if (bPrimerPaso)
+                {
+                    Ejecutar(ConexionV1, new Scripts().getProcedures());
+                    CompararProcedimientos();
+                    Cerrar();
+                }
+                else
+                {
+                    Ejecutar(ConexionV2, new Scripts().getProcedures());
+                    CompararProcedimientos();
+                    Cerrar();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private void CompararProcedimientos()
         {
             try

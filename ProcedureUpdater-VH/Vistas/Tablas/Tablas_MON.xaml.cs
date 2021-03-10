@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using ProcedureUpdater_VH.Metodos;
 using ProcedureUpdater_VH.SQL;
 
@@ -14,6 +15,7 @@ namespace ProcedureUpdater_VH.Vistas
     /// </summary>
     public partial class Tablas_MON : Page
     {
+        private static NavigationService nsNavigator { get; } = (Application.Current.MainWindow as Principal_MAIN).frm_Principal.NavigationService;
         private List<VersionesTabla> lstVersionesTablas = null;
         private List<VersionesTabla> lstVersionesTablasBusqueda = null;
         private List<Conexion> lstConexiones = null;
@@ -68,7 +70,7 @@ namespace ProcedureUpdater_VH.Vistas
         private void Editar()
         {
             Conexion_MON conexion = new Conexion_MON();
-            this.NavigationService.Navigate(conexion);
+            nsNavigator.Navigate(conexion);
             if (conexion.bModifico)
             {
                 CargarDatos();

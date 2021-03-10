@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace ProcedureUpdater_VH.Vistas
@@ -20,12 +21,15 @@ namespace ProcedureUpdater_VH.Vistas
     /// </summary>
     public partial class Procedimientos_MON : Page
     {
+        private static NavigationService nsNavigator { get; } = (Application.Current.MainWindow as Principal_MAIN).frm_Principal.NavigationService;
         private List<Procedure> lstProcedimiento = new List<Procedure>();
         private List<Procedure> lstProcedimientoBusqueda = new List<Procedure>();
         private Ejecutor ejecutor = new Ejecutor();
         private List<Conexion> lstConexiones = new List<Conexion>();
         private Conexion ConexionV1 = null;
         private Conexion ConexionV2 = null;
+        private Configuracion configuracion = null;
+        private bool bPasosPrimer = true;
 
         public Procedimientos_MON()
         {
@@ -37,7 +41,7 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void Configuracion()
         {
-            Configuracion configuracion = Conversor.AbrirConfiguracionXML();
+            configuracion = Conversor.AbrirConfiguracionXML();
             if (configuracion != null && configuracion.sKey1 != null)
             {
                 cbx_ConexionV1.SelectedValue = configuracion.sKey1;
@@ -72,6 +76,30 @@ namespace ProcedureUpdater_VH.Vistas
             }
         }
 
+        private void CargarDatosTabla()
+        {
+            lstProcedimientoBusqueda = new List<Procedure>();
+            foreach (Procedure procedimiento in lstProcedimiento)
+            {
+                lstProcedimientoBusqueda.Add(procedimiento);
+            }
+
+            dg_Procedimientos.ItemsSource = lstProcedimientoBusqueda;
+            dg_Procedimientos.Items.Refresh();
+
+            if (lstProcedimientoBusqueda.Count == 0)
+            {
+                lbl_Resultado.Content = "";
+                Msg.Info("No se encontrarón procedimientos almacenados desactualizados entre las bases de datos seleccionadas.");
+            }
+            else
+            {
+                int nModificar = lstProcedimientoBusqueda.Count(x => !x.Modificar);
+                lbl_Resultado.Content = String.Format("Por Actualizar: [{0}]   Por Agregar: [{1}]", lstProcedimientoBusqueda.Count - nModificar, nModificar);
+            }
+        }
+
+
         private void BuscarProcedures()
         {
             ConexionV1 = (Conexion)cbx_ConexionV1.SelectedItem;
@@ -92,31 +120,51 @@ namespace ProcedureUpdater_VH.Vistas
                     ejecutor = new Ejecutor();
                     ejecutor.ObtenerProcedimientos(ConexionV1, ConexionV2);
                     lstProcedimiento = ejecutor.lstProcedimiento;
-
-                    lstProcedimientoBusqueda = new List<Procedure>();
-                    foreach (Procedure procedimiento in lstProcedimiento)
-                    {
-                        lstProcedimientoBusqueda.Add(procedimiento);
-                    }
-
-                    dg_Procedimientos.ItemsSource = lstProcedimientoBusqueda;
-                    dg_Procedimientos.Items.Refresh();
-
-                    if (lstProcedimientoBusqueda.Count == 0)
-                    {
-                        lbl_Resultado.Content = "";
-                        Msg.Info("No se encontrarón procedimientos almacenados desactualizados entre las bases de datos seleccionadas.");
-                    }
-                    else
-                    {
-                        int nModificar = lstProcedimientoBusqueda.Count(x => !x.Modificar);
-                        lbl_Resultado.Content = String.Format("Por Actualizar: [{0}]   Por Agregar: [{1}]", lstProcedimientoBusqueda.Count - nModificar, nModificar);
-                    }
+                    CargarDatosTabla();
                 }
                 catch (Exception ex)
                 {
                     Msg.Error(ex);
                 }
+            }
+        }
+
+        private void BuscarProceduresPasos()
+        {
+            ConexionV1 = (Conexion)cbx_ConexionV1.SelectedItem;
+            ConexionV2 = (Conexion)cbx_ConexionV2.SelectedItem;
+
+            if (ConexionV1 == null)
+            {
+                Msg.Warning("Información Incompleta. No has seleccionado una conexión a base de datos principal.");
+            }
+            else if (ConexionV2 == null)
+            {
+                Msg.Warning("Información Incompleta. No has seleccionado una conexión a base de datos secundaria.");
+            }
+            else
+            {
+                
+                if (bPasosPrimer)
+                {
+                    ejecutor = new Ejecutor();
+                }
+
+                ejecutor.ObtenerProcedimientosPasos(ConexionV1, ConexionV2, bPasosPrimer);
+
+                if (!bPasosPrimer)
+                {
+                    lstProcedimiento = ejecutor.lstProcedimiento;
+                    CargarDatosTabla();
+                }
+                else
+                {
+                    Msg.Success("Se concreto la obtención de datos de la primera conexión, modifica tu acceso a la segunda conexión y vuelve a buscar para completa el proceso de comparación.");
+                }
+
+                bPasosPrimer = !bPasosPrimer;
+                cbx_ConexionV1.IsEnabled = bPasosPrimer;
+                cbx_ConexionV2.IsEnabled = bPasosPrimer;
             }
         }
 
@@ -142,7 +190,7 @@ namespace ProcedureUpdater_VH.Vistas
         private void Editar()
         {
             Conexion_MON conexion = new Conexion_MON();
-            this.NavigationService.Navigate(conexion);
+            nsNavigator.Navigate(conexion);
             if (conexion.bModifico)
             {
                 CargarDatos();
@@ -196,7 +244,14 @@ namespace ProcedureUpdater_VH.Vistas
 
         private void btn_Buscar_Click(object sender, RoutedEventArgs e)
         {
-            BuscarProcedures();
+            if (configuracion.UsarPasos)
+            {
+                BuscarProceduresPasos();
+            }
+            else
+            {
+                BuscarProcedures();
+            }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

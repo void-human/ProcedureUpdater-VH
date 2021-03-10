@@ -31,6 +31,7 @@ namespace ProcedureUpdater_VH.Vistas
             this.configuracion = Conversor.AbrirConfiguracionXML();
             txt_Directorio.Text = configuracion.Direccion;
             cbx_usar_directorio.IsChecked = configuracion.UsarDireccion;
+            cbx_conexion_unica.IsChecked = configuracion.UsarPasos;
             CargarConexiones();
         }
 
@@ -99,6 +100,7 @@ namespace ProcedureUpdater_VH.Vistas
         {
             if (bCambios 
                 || configuracion.UsarDireccion != (bool)cbx_usar_directorio.IsChecked 
+                || configuracion.UsarPasos != (bool)cbx_conexion_unica.IsChecked 
                 || (cbx_ConexionV1.SelectedValue != null && !configuracion.sKey1.Equals((string)cbx_ConexionV1.SelectedValue)) 
                 || (cbx_ConexionV2.SelectedValue != null && !configuracion.sKey2.Equals((string)cbx_ConexionV2.SelectedValue)))
             {
@@ -109,6 +111,8 @@ namespace ProcedureUpdater_VH.Vistas
                         configuracion.sKey1 = (string) cbx_ConexionV1.SelectedValue;
                         configuracion.sKey2 = (string) cbx_ConexionV2.SelectedValue;
                         configuracion.UsarDireccion = (bool)cbx_usar_directorio.IsChecked;
+                        configuracion.UsarPasos = (bool)cbx_conexion_unica.IsChecked;
+
                         Conversor.GuardarConfiguracion(this.configuracion);
                         Msg.Success("Correcto. Los cambios se guardarón correctamente.");
                     }
@@ -120,7 +124,7 @@ namespace ProcedureUpdater_VH.Vistas
             }
         }
 
-        private void Volver() //Volver
+        private void Volver()
         {
             Guardar();
             this.NavigationService.GoBack();
