@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProcedureUpdater_VH.SQL
 {
@@ -90,7 +91,7 @@ namespace ProcedureUpdater_VH.SQL
                     {
                         string sNombre = (string)DR["Nombre"];
                         string sScript = (string)DR["Script"];
-                        sScript = sScript.Replace("[", "").Replace("]", "");
+                        //sScript = sScript.Replace("[", "").Replace("]", "");
 
                         int nIndice = lstProcedimiento.FindIndex(x => x.Nombre.Equals(sNombre));
                         if (nIndice == -1)

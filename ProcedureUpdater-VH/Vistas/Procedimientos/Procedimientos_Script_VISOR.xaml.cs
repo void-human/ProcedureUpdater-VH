@@ -127,9 +127,9 @@ namespace ProcedureUpdater_VH.Vistas
             dg_Scripts.Items.Refresh();
         }
 
-        private void Actualizar()
+        public void Actualizar(bool bValidar = false)
         {
-            if (Msg.Confirm("¿Estas seguro de que deseas actualizar este script?"))
+            if (bValidar || Msg.Confirm("¿Estas seguro de que deseas actualizar este script?"))
             {
                 try
                 {
@@ -148,6 +148,7 @@ namespace ProcedureUpdater_VH.Vistas
                         version.sKey = "";
                         Conversor.GuardarBackupScript(version);
 
+                        if(!bValidar)
                         Msg.Success(String.Format("Correcto. El Script se actualizo en la base de datos {0}", ConexionV2.BDD));
 
                         if (!bUsarDireccion)

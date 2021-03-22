@@ -41,10 +41,10 @@ namespace ProcedureUpdater_VH.Vistas
             cbx_ConexionV1.ItemsSource = lstConexiones;
             cbx_ConexionV2.ItemsSource = lstConexiones;
             
-            cbx_ConexionV1.DisplayMemberPath = "BDD";
+            cbx_ConexionV1.DisplayMemberPath = "sConexion";
             cbx_ConexionV1.SelectedValuePath = "sKey";
             
-            cbx_ConexionV2.DisplayMemberPath = "BDD";
+            cbx_ConexionV2.DisplayMemberPath = "sConexion";
             cbx_ConexionV2.SelectedValuePath = "sKey";
 
             cbx_ConexionV1.Items.Refresh();

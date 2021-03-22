@@ -134,7 +134,7 @@
                             <CheckBox
                                 x:Name="cbx_Actualizar"
                                 IsChecked="{Binding Modificar}"
-                                IsEnabled="False"
+                                Click="cbx_Actualizar_Click"
                                 />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -162,18 +162,47 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button 
+        
+        <Grid
             Grid.Column="1"
-            Grid.Row="6"
-            Foreground="Black"
-            Background="WhiteSmoke"
-            Width="120"
-            BorderBrush="Black"
-            BorderThickness="1"
-            HorizontalAlignment="Right"
-            x:Name="btn_volver"
-            Click="btn_volver_Click"
-            Content="Volver"
-            />
+            Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button
+                x:Name="btn_Actualizar"
+                Content="Actualizar Seleccionado"
+                Width="150"
+                HorizontalAlignment="Left"
+                Click="btn_Actualizar_Click"
+                />
+
+            <Button
+                Grid.Column="1"
+                x:Name="btn_Quitar"
+                Content="Quitar Selección"
+                Width="120"
+                HorizontalAlignment="Left"
+                Click="btn_Quitar_Click"
+                />
+
+            <Button 
+                Grid.Column="2"
+                Foreground="Black"
+                Background="WhiteSmoke"
+                Width="120"
+                BorderBrush="Black"
+                BorderThickness="1"
+                HorizontalAlignment="Right"
+                x:Name="btn_volver"
+                Click="btn_volver_Click"
+                Content="Volver"
+                />
+        </Grid>
+        
+
     </Grid>
 </Page>

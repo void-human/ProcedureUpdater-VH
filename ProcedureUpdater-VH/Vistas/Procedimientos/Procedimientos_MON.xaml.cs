@@ -3,16 +3,10 @@ using ProcedureUpdater_VH.SQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ProcedureUpdater_VH.Vistas
 {
@@ -64,10 +58,10 @@ namespace ProcedureUpdater_VH.Vistas
             cbx_ConexionV2.Items.Refresh();
 
             cbx_ConexionV1.SelectedValuePath = "sKey";
-            cbx_ConexionV1.DisplayMemberPath = "BDD";
+            cbx_ConexionV1.DisplayMemberPath = "sConexion";
 
             cbx_ConexionV2.SelectedValuePath = "sKey";
-            cbx_ConexionV2.DisplayMemberPath = "BDD";
+            cbx_ConexionV2.DisplayMemberPath = "sConexion";
 
             if (lstConexiones.Count == 0)
             {
@@ -144,27 +138,33 @@ namespace ProcedureUpdater_VH.Vistas
             }
             else
             {
-                
-                if (bPasosPrimer)
+                try
                 {
-                    ejecutor = new Ejecutor();
+                    if (bPasosPrimer)
+                    {
+                        ejecutor = new Ejecutor();
+                    }
+
+                    ejecutor.ObtenerProcedimientosPasos(ConexionV1, ConexionV2, bPasosPrimer);
+
+                    if (!bPasosPrimer)
+                    {
+                        lstProcedimiento = ejecutor.lstProcedimiento;
+                        CargarDatosTabla();
+                    }
+                    else
+                    {
+                        Msg.Success("Se concreto la obtención de datos de la primera conexión, modifica tu acceso a la segunda conexión y vuelve a buscar para completa el proceso de comparación.");
+                    }
+
+                    bPasosPrimer = !bPasosPrimer;
+                    cbx_ConexionV1.IsEnabled = bPasosPrimer;
+                    cbx_ConexionV2.IsEnabled = bPasosPrimer;
                 }
-
-                ejecutor.ObtenerProcedimientosPasos(ConexionV1, ConexionV2, bPasosPrimer);
-
-                if (!bPasosPrimer)
+                catch (Exception e)
                 {
-                    lstProcedimiento = ejecutor.lstProcedimiento;
-                    CargarDatosTabla();
+                    Msg.Error(e);
                 }
-                else
-                {
-                    Msg.Success("Se concreto la obtención de datos de la primera conexión, modifica tu acceso a la segunda conexión y vuelve a buscar para completa el proceso de comparación.");
-                }
-
-                bPasosPrimer = !bPasosPrimer;
-                cbx_ConexionV1.IsEnabled = bPasosPrimer;
-                cbx_ConexionV2.IsEnabled = bPasosPrimer;
             }
         }
 
@@ -232,6 +232,74 @@ namespace ProcedureUpdater_VH.Vistas
             }
         }
 
+        private void Seleccionar()
+        {
+            Procedure procedure = (Procedure)dg_Procedimientos.SelectedItem;
+            int nIndice = lstProcedimientoBusqueda.FindIndex(x => x.Nombre.Equals(procedure.Nombre));
+            if (nIndice != -1)
+            {
+                lstProcedimientoBusqueda[nIndice].Modificar = !lstProcedimientoBusqueda[nIndice].Modificar;
+                dg_Procedimientos.Items.Refresh();
+
+                int nModificar = lstProcedimientoBusqueda.Count(x => !x.Modificar);
+                lbl_Resultado.Content = String.Format("Por Actualizar: [{0}]   Por Agregar: [{1}]", lstProcedimientoBusqueda.Count - nModificar, nModificar);
+            }
+        }
+
+        private void Actualizar()
+        {
+            int nCantidad = lstProcedimientoBusqueda.Where(x => x.Modificar).Count();
+            if (nCantidad > 0)
+            {
+                bool bConfirma = Msg.Confirm(String.Format("¿Estás seguro de que deseas actualizar los {0} procedimientos almacenados en {1}?", nCantidad.ToString(), cbx_ConexionV2.Text));
+                if (bConfirma)
+                {
+                    string sRespuesta = "";
+
+                    foreach (Procedure procedure in lstProcedimientoBusqueda.Where(x => x.Modificar))
+                    {
+                        try
+                        {
+                            Procedimientos_Script_VISOR scripts = new Procedimientos_Script_VISOR(procedure.Nombre, procedure.DefinicionV1, procedure.DefinicionV2, ConexionV2);
+                            scripts.Actualizar(true);
+                        }
+                        catch (Exception ex)
+                        {
+                            sRespuesta += "\n" + procedure.Nombre + ": " + ex.Message;
+                        }
+                    }
+
+                    if (sRespuesta.Equals(""))
+                    {
+                        Msg.Success("Se actualizador correctamente todos los procedimientos almacenados seleccionados.");
+                    }
+                    else
+                    {
+                        Msg.Warning("Finalizo con errores. "+sRespuesta);
+                    }
+                   
+                }
+            }
+            else
+            {
+                Msg.Warning("No has seleccionado ningún procedimiento almacenado para actualizar.");
+            }
+        }
+
+        private void QuitarSeleccion()
+        {
+            for (int i = 0; i < lstProcedimientoBusqueda.Count; i++)
+            {
+                lstProcedimientoBusqueda[i].Modificar = false;
+            }
+
+            dg_Procedimientos.ItemsSource = lstProcedimientoBusqueda;
+            dg_Procedimientos.Items.Refresh();
+
+            int nModificar = lstProcedimientoBusqueda.Count(x => !x.Modificar);
+            lbl_Resultado.Content = String.Format("Por Actualizar: [{0}]   Por Agregar: [{1}]", lstProcedimientoBusqueda.Count - nModificar, nModificar);
+        }
+
         private void btn_AbrirV1_Click(object sender, RoutedEventArgs e)
         {
             Abrir();
@@ -262,6 +330,21 @@ namespace ProcedureUpdater_VH.Vistas
         private void btn_volver_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.GoBack();
+        }
+
+        private void btn_Actualizar_Click(object sender, RoutedEventArgs e)
+        {
+            Actualizar();
+        }
+
+        private void cbx_Actualizar_Click(object sender, RoutedEventArgs e)
+        {
+            Seleccionar();
+        }
+
+        private void btn_Quitar_Click(object sender, RoutedEventArgs e)
+        {
+            QuitarSeleccion();
         }
     }
 }

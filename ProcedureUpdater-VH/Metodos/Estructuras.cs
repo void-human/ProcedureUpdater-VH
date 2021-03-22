@@ -14,6 +14,7 @@ namespace ProcedureUpdater_VH.Metodos
         public string Contrasena { set; get; }
         public string BDD { set; get; }
         public string IP { set; get; }
+        public string sConexion { get { return IP + ':' + BDD; } }
         public string sKey { set; get; } //Considerar como ID
     }
 

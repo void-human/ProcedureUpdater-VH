@@ -118,7 +118,7 @@ namespace ProcedureUpdater_VH.Vistas
             {
                 if (columna.bNuevo)
                 {
-                    sScriptAlter += String.Format("ALTER TABLE {0} ADD COLUMN {1} \nGO\n\n", Tabla, columna.CompletoV1);
+                    sScriptAlter += String.Format("ALTER TABLE {0} ADD {1} \nGO\n\n", Tabla, columna.CompletoV1);
                 }
                 else if (columna.bModificacion)
                 {
