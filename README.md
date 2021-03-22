@@ -8,11 +8,12 @@
 
 4. Permite la visualización de cambios en procedimientos almacenados a partir de los respaldos locales.
 
+5. Conexión por pasos; ahora permite buscar procedimientos en una primera conexión y en un proceso por pasos una segunda busqueda a otra conexión, es decir, busca primero un listado de procedimientos almacenados, notifica al usuario que los obtuvo y que ahora puede cambiar su conexión de red o VPN en caso de ser necesario y hacer la segunda busqueda a la segunda conexión y asi ya realizar la comparación entre scripts.
+
 
 ADEVERTENCIA: 
-1. El comparador de Procedimientos Almacenados omite los siguientes simbolos en el visualizador de versiones: ] [
-2. El Script generado para los cambios sobre Tablas es a partir de un analisis rapido de la base de datos, no considera las llaves primarias y foraneas reales, este mismo las crea a partir del nombre de las propiedades de las tablas, tomando como base la palabra "id" como una llave primaria y "id" seguido de un guíon bajo ("id_%") para las llaves foraneas, tomando como tablas de referencia el sufijo del guion bajo, por ejemplo, "id_mtr_material" considera que es un id foraneo de la tabla "mtr_material", todos los "id" del tipo "int" los considera como IDENTITY(1,1).
-3. El metódo de encriptado de toda la información generada no mantiene a salvo su información, se utiliza solo para evitar la modificación de los documento de manera manual.
+1. El Script generado para los cambios sobre Tablas es a partir de un analisis rapido de la base de datos, no considera las llaves primarias y foraneas reales, este mismo las crea a partir del nombre de las propiedades de las tablas, tomando como base la palabra "id" como una llave primaria y "id" seguido de un guíon bajo ("id_%") para las llaves foraneas, tomando como tablas de referencia el sufijo del guion bajo, por ejemplo, "id_mtr_material" considera que es un id foraneo de la tabla "mtr_material", todos los "id" del tipo "int" los considera como IDENTITY(1,1).
+2. El metódo de encriptado de toda la información generada no mantiene a salvo su información, se utiliza solo para evitar la modificación de los documento de manera manual.
 
 WORKING: 
 1. Se está desarrollando una generación de scripts de cambios en Tablas mas proxima a la real.
