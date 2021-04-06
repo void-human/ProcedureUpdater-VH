@@ -1,5 +1,5 @@
 SELECT
-	M.definition AS Script
+	  replace(replace(M.definition,'CREATE PROCEDURE','ALTER PROCEDURE'), 'CREATE  PROCEDURE','ALTER PROCEDURE') AS Script
 	, O.name AS Nombre 
 FROM 
 	sys.sql_modules M 

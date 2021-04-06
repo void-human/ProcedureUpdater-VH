@@ -44,6 +44,7 @@ namespace ProcedureUpdater_VH.Vistas
             if (sScriptV2 == null)
             {
                 sScriptV2 = "";
+                sScriptV1 = sScriptV1.Replace("ALTER PROCEDURE", "CREATE PROCEDURE");
             }
             else
             {
