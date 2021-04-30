@@ -39,6 +39,7 @@ namespace ProcedureUpdater_VH.Metodos
     {
         public string Nombre { set; get; }
         public List<Columna> lstColumnas { set; get; }
+        public string sScripts { set; get; }
     }
 
     public class Columna

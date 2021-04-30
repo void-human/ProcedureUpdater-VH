@@ -47,9 +47,11 @@ namespace ProcedureUpdater_VH.Metodos
         {
             string[] lines = new string[] { Encriptar(sXML) };
             string sFile = sFileKey;
+            DateTime dtFecha = DateTime.Now;
+            string sDate = dtFecha.Year + "\\" + dtFecha.Month + "\\" + dtFecha.Day + "\\";
 
             string sPath = "";
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\";
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\" + sDate;
             Directory.CreateDirectory(sPath);
 
             try
@@ -62,12 +64,14 @@ namespace ProcedureUpdater_VH.Metodos
             }
         }
 
-        public static List<RespaldoVersion> AbrirBackupScriptXML()
+        public static List<RespaldoVersion> AbrirBackupScriptXML(DateTime dtFechaFiltro)
         {
             List<RespaldoVersion> lstVersiones = new List<RespaldoVersion>();
 
             string sPath = "";
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\";
+            string sDate = dtFechaFiltro.Year + "\\" + dtFechaFiltro.Month + "\\" + dtFechaFiltro.Day + "\\";
+
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\" + sDate;
             Directory.CreateDirectory(sPath);
 
             string[] files = Directory.GetFiles(sPath, "*.bkvh");

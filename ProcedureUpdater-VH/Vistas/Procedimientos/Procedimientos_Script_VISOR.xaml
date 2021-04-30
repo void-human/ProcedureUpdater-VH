@@ -41,6 +41,7 @@
             AutoGenerateColumns="False"
             IsReadOnly="True"
             Grid.Column="1"
+            CanUserSortColumns="False"
             Grid.Row="2">
 
             <DataGrid.Columns>

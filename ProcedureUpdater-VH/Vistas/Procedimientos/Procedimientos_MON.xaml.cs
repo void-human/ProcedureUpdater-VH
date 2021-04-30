@@ -84,7 +84,7 @@ namespace ProcedureUpdater_VH.Vistas
             if (lstProcedimientoBusqueda.Count == 0)
             {
                 lbl_Resultado.Content = "";
-                Msg.Info("No se encontrarón procedimientos almacenados desactualizados entre las bases de datos seleccionadas.");
+               Msg.Warning("No se encontrarón procedimientos almacenados desactualizados entre las bases de datos seleccionadas.");
             }
             else
             {
@@ -94,7 +94,7 @@ namespace ProcedureUpdater_VH.Vistas
         }
 
 
-        private void BuscarProcedures()
+        private async Task<bool> BuscarProcedures()
         {
             ConexionV1 = (Conexion)cbx_ConexionV1.SelectedItem;
             ConexionV2 = (Conexion)cbx_ConexionV2.SelectedItem;
@@ -111,16 +111,31 @@ namespace ProcedureUpdater_VH.Vistas
             {
                 try
                 {
+                    string sBuscar = txt_Buscar.Text;
                     ejecutor = new Ejecutor();
-                    ejecutor.ObtenerProcedimientos(ConexionV1, ConexionV2);
+
+                    Task t = Msg.Toast("Buscando Procedimientos Almacenados", Colores.Azul);
+
+                    btn_Buscar.IsEnabled = false;
+                    
+                    await Task.Run(() => {
+                        ejecutor.ObtenerProcedimientos(ConexionV1, ConexionV2, sBuscar);
+                    });
+
+                    btn_Buscar.IsEnabled = true;
+
                     lstProcedimiento = ejecutor.lstProcedimiento;
                     CargarDatosTabla();
+                    
                 }
                 catch (Exception ex)
                 {
                     Msg.Error(ex);
+                    return false;
                 }
             }
+
+            return true;
         }
 
         private void BuscarProceduresPasos()
@@ -144,8 +159,8 @@ namespace ProcedureUpdater_VH.Vistas
                     {
                         ejecutor = new Ejecutor();
                     }
-
-                    ejecutor.ObtenerProcedimientosPasos(ConexionV1, ConexionV2, bPasosPrimer);
+                    string sBuscar = txt_Buscar.Text;
+                    ejecutor.ObtenerProcedimientosPasos(ConexionV1, ConexionV2, bPasosPrimer, sBuscar);
 
                     if (!bPasosPrimer)
                     {
@@ -256,22 +271,34 @@ namespace ProcedureUpdater_VH.Vistas
                 {
                     string sRespuesta = "";
 
+                    List<string> lstActualizados = new List<string>();
                     foreach (Procedure procedure in lstProcedimientoBusqueda.Where(x => x.Modificar))
                     {
                         try
                         {
                             Procedimientos_Script_VISOR scripts = new Procedimientos_Script_VISOR(procedure.Nombre, procedure.DefinicionV1, procedure.DefinicionV2, ConexionV2);
                             scripts.Actualizar(true);
+                            if (scripts.bActualizo)
+                            {
+                                lstActualizados.Add(procedure.Nombre);
+                            }
                         }
                         catch (Exception ex)
                         {
-                            sRespuesta += "\n" + procedure.Nombre + ": " + ex.Message;
+                            sRespuesta += "\n\n" + procedure.Nombre + ": \n" + ex.Message;
                         }
                     }
 
+                    foreach (string sStoreProcedure in lstActualizados)
+                    {
+                        lstProcedimiento.RemoveAll(x => x.Nombre.ToLower().Equals(sStoreProcedure.ToLower()));
+                    }
+
+                    Buscar();
+
                     if (sRespuesta.Equals(""))
                     {
-                        Msg.Success("Se actualizador correctamente todos los procedimientos almacenados seleccionados.");
+                        Msg.Success("Se actualizarón correctamente todos los procedimientos almacenados seleccionados.");
                     }
                     else
                     {
@@ -318,7 +345,7 @@ namespace ProcedureUpdater_VH.Vistas
             }
             else
             {
-                BuscarProcedures();
+                Task<bool> bTarea = BuscarProcedures();
             }
         }
 

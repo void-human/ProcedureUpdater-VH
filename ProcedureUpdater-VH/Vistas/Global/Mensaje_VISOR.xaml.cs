@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcedureUpdater_VH.Metodos;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -28,42 +29,40 @@ namespace ProcedureUpdater_VH.Vistas
             switch (sTipo)
             {
                 case "Error":
-                    stkp_Titulo.Background = getColor("#782020");
+                    stkp_Titulo.Background = Msg.getColor(Colores.Rojo);
+                    this.BorderBrush = Msg.getColor(Colores.Rojo);
                     lbl_Titulo.Content = "Error";
                     btn_Cancelar.Visibility = Visibility.Collapsed;
-                    btn_Aceptar.Background = getColor("#000000");
+                    btn_Aceptar.Background = Msg.getColor(Colores.Negro);
                     break;
                 case "Warning":
-                    stkp_Titulo.Background = getColor("#B16806");
+                    stkp_Titulo.Background = Msg.getColor(Colores.Naranja);
+                    this.BorderBrush = Msg.getColor(Colores.Naranja);
                     lbl_Titulo.Content = "Advertencia";
                     btn_Cancelar.Visibility = Visibility.Collapsed;
-                    btn_Aceptar.Background = getColor("#000000");
+                    btn_Aceptar.Background = Msg.getColor(Colores.Negro);
                     break;
                 case "Info":
-                    stkp_Titulo.Background = getColor("#0F3E8D");
+                    stkp_Titulo.Background = Msg.getColor(Colores.Azul);
+                    this.BorderBrush = Msg.getColor(Colores.Azul);
                     lbl_Titulo.Content = "Información";
                     btn_Cancelar.Visibility = Visibility.Collapsed;
-                    btn_Aceptar.Background = getColor("#000000");
+                    btn_Aceptar.Background = Msg.getColor(Colores.Negro);
                     break;
                 case "Success":
-                    stkp_Titulo.Background = getColor("#137E04");
+                    stkp_Titulo.Background = Msg.getColor(Colores.Verde);
+                    this.BorderBrush = Msg.getColor(Colores.Verde);
                     lbl_Titulo.Content = "Completado";
                     btn_Cancelar.Visibility = Visibility.Collapsed;
                     break;
                 case "Confirm":
-                    stkp_Titulo.Background = getColor("#2D302C");
+                    stkp_Titulo.Background = Msg.getColor(Colores.GrisOscuro);
+                    this.BorderBrush = Msg.getColor(Colores.GrisOscuro);
                     lbl_Titulo.Content = "Confirmar";
                     break;
             }
 
             FocusManager.SetFocusedElement(this, btn_Aceptar);
-        }
-
-        private Brush getColor(string sColor)
-        {
-            var converter = new BrushConverter();
-            var brush = (Brush)converter.ConvertFromString(sColor);
-            return brush;
         }
 
         private void btn_Cancelar_Click(object sender, RoutedEventArgs e)

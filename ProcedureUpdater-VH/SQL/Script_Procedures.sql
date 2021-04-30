@@ -13,5 +13,6 @@ WHERE
 						, 'sp_helpdiagrams'
 						, 'sp_renamediagram'
 						, 'sp_upgraddiagrams')
+	AND O.name LIKE '%' + @Buscar + '%'
 ORDER BY 
 	O.name

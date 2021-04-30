@@ -36,17 +36,17 @@ namespace ProcedureUpdater_VH.SQL
             sqlcConexion.Close();
         }
 
-        public void ObtenerProcedimientos(Conexion ConexionV1, Conexion ConexionV2)
+        public void ObtenerProcedimientos(Conexion ConexionV1, Conexion ConexionV2, string sBuscar)
         {
             try
             {
                 lstProcedimiento = new List<Procedure>();
 
-                Ejecutar(ConexionV1, new Scripts().getProcedures());
+                Ejecutar(ConexionV1, Scripts.getProcedures(sBuscar));
                 CompararProcedimientos();
                 Cerrar();
 
-                Ejecutar(ConexionV2, new Scripts().getProcedures());
+                Ejecutar(ConexionV2, Scripts.getProcedures(sBuscar));
                 CompararProcedimientos();
                 Cerrar();
             }
@@ -56,7 +56,7 @@ namespace ProcedureUpdater_VH.SQL
             }
         }
 
-        public void ObtenerProcedimientosPasos(Conexion ConexionV1, Conexion ConexionV2, bool bPrimerPaso)
+        public void ObtenerProcedimientosPasos(Conexion ConexionV1, Conexion ConexionV2, bool bPrimerPaso, string sBuscar)
         {
             try
             {
@@ -64,13 +64,13 @@ namespace ProcedureUpdater_VH.SQL
 
                 if (bPrimerPaso)
                 {
-                    Ejecutar(ConexionV1, new Scripts().getProcedures());
+                    Ejecutar(ConexionV1, Scripts.getProcedures(sBuscar));
                     CompararProcedimientos();
                     Cerrar();
                 }
                 else
                 {
-                    Ejecutar(ConexionV2, new Scripts().getProcedures());
+                    Ejecutar(ConexionV2, Scripts.getProcedures(sBuscar));
                     CompararProcedimientos();
                     Cerrar();
                 }
@@ -91,7 +91,6 @@ namespace ProcedureUpdater_VH.SQL
                     {
                         string sNombre = (string)DR["Nombre"];
                         string sScript = (string)DR["Script"];
-                        //sScript = sScript.Replace("[", "").Replace("]", "");
 
                         int nIndice = lstProcedimiento.FindIndex(x => x.Nombre.Equals(sNombre));
                         if (nIndice == -1)
@@ -174,7 +173,8 @@ namespace ProcedureUpdater_VH.SQL
                                     lstColumnas = new List<Columna>()
                                     {
                                          objColumna
-                                    }
+                                    },
+                                    sScripts = ""
                                 },
 
                                 TablaV2 = new Tabla()
@@ -183,7 +183,8 @@ namespace ProcedureUpdater_VH.SQL
                                     lstColumnas = new List<Columna>() 
                                     { 
                                         
-                                    }
+                                    },
+                                    sScripts = ""
                                 },
                                 bModificar = false
                             });
@@ -206,21 +207,55 @@ namespace ProcedureUpdater_VH.SQL
             }
         }
 
+        public string ObtenerCodigoTabla(Conexion conexion, string sTabla)
+        {
+            string sScripts = "";
+
+            try 
+            {
+                Ejecutar(conexion, Scripts.getCreateTables(sTabla));
+                if (DR != null && DR.HasRows && DR.Read())
+                {
+                    sScripts = (string)DR["Tabla"];
+                }
+            } 
+            catch (Exception ex) 
+            {
+                throw ex;
+            }
+
+            return sScripts;
+        }
+
         public void ObtenerTablas(Conexion ConexionV1, Conexion ConexionV2)
         {
             try
             {
                 lstVersionesTablas = new List<VersionesTabla>();
 
-                Ejecutar(ConexionV1, new Scripts().getTables());
+                Ejecutar(ConexionV1, Scripts.getTables());
                 GuardarTablas(true);
                 Cerrar();
 
-                Ejecutar(ConexionV2, new Scripts().getTables());
+                Ejecutar(ConexionV2, Scripts.getTables());
                 GuardarTablas(false);
                 Cerrar();
 
                 CompararTablas();
+
+                for (int version = 0; version < lstVersionesTablas.Count; version++)
+                {
+                    if (!lstVersionesTablas[version].TablaV1.Nombre.Equals(""))
+                    {
+                        lstVersionesTablas[version].TablaV1.sScripts = ObtenerCodigoTabla(ConexionV1, lstVersionesTablas[version].TablaV1.Nombre);
+                    }
+
+                    if (!lstVersionesTablas[version].TablaV2.Nombre.Equals(""))
+                    {
+                        lstVersionesTablas[version].TablaV2.sScripts = ObtenerCodigoTabla(ConexionV2, lstVersionesTablas[version].TablaV2.Nombre);
+                    }
+                    
+                }
             }
             catch (Exception)
             {

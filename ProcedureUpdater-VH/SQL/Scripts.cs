@@ -11,7 +11,7 @@ namespace ProcedureUpdater_VH.SQL
     public class Scripts
     {
 
-        public string getProcedures()
+        public static string getProcedures(string sBuscar)
         {
             string sScript = "";
 
@@ -19,11 +19,11 @@ namespace ProcedureUpdater_VH.SQL
             Stream stream = assembly.GetManifestResourceStream("ProcedureUpdater_VH.SQL.Script_Procedures.sql");
             StreamReader reader = new StreamReader(stream);
             sScript = reader.ReadToEnd();
-
+            sScript = sScript.Replace("@Buscar",String.Format("'{0}'", sBuscar));
             return sScript;
         }
 
-        public string getTables()
+        public static string getTables()
         {
             string sScript = "";
 
@@ -35,7 +35,7 @@ namespace ProcedureUpdater_VH.SQL
             return sScript;
         }
 
-        public string getCreateTables(string sTable, string[] arrsPropiedades)
+        public static string getCreateTables(string sTable)
         {
             string sScript = "";
 
@@ -45,28 +45,6 @@ namespace ProcedureUpdater_VH.SQL
             sScript = reader.ReadToEnd();
 
             sScript = sScript.Replace("@Tabla",sTable);
-
-            string sPropiedades = "";
-            for (int i = 0; i < arrsPropiedades.Length; i++)
-            {
-                string sLinea = arrsPropiedades[i];
-
-                if (i == 0)
-                {
-                    sPropiedades += sLinea + "\n";
-                }
-                else if(i == arrsPropiedades.Length-1)
-                {
-                    sPropiedades += "           , " + sLinea;
-                }
-                else 
-                {
-                    sPropiedades += "           , " + sLinea + "\n";
-                }       
-            
-            }
-
-            sScript = sScript.Replace("@Script", sPropiedades);
 
             return sScript;
         }

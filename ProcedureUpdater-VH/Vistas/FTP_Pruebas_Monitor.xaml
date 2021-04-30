@@ -1,0 +1,18 @@
+﻿<Window x:Class="ProcedureUpdater_VH.Vistas.FTP_Pruebas_Monitor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas"
+        mc:Ignorable="d"
+        Title="FTP_Pruebas_Monitor" Height="450" Width="800">
+    <Grid>
+        <Button
+            Height="40"
+            Width="220"
+            x:Name="btn_conectar"
+            Content="Conectar"
+            Click="btn_conectar_Click"
+            />
+    </Grid>
+</Window>

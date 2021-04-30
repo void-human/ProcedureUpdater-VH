@@ -80,12 +80,16 @@
             Grid.Column="1"
             Grid.Row="4"
             >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="200*"/>
-            </Grid.ColumnDefinitions>
+
+            <DatePicker
+                x:Name="txt_FechaFiltro"
+                Width="120"
+                HorizontalAlignment="Left"
+                materialDesign:HintAssist.Hint="Fecha del Backup"
+                materialDesign:HintAssist.IsFloating="True"
+                SelectedDateChanged="txt_FechaaFiltro_SelectedDateChanged"
+                />
+
             <Button
                 x:Name="btn_Cerrar"
                 Grid.Column="3"

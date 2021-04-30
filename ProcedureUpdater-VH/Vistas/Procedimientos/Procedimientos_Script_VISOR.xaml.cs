@@ -169,7 +169,14 @@ namespace ProcedureUpdater_VH.Vistas
                 }
                 catch (Exception ex)
                 {
-                    Msg.Error(ex);
+                    if (bValidar)
+                    {
+                        throw ex;
+                    }
+                    else
+                    {
+                        Msg.Error(ex);
+                    }
                 }
             }
         }

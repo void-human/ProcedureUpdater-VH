@@ -20,31 +20,29 @@ namespace ProcedureUpdater_VH.Vistas
     /// </summary>
     public partial class Tablas_Columnas_VISOR : Page
     {
-        private List<Columna> lstColumnasV1 = null;
-        private List<Columna> lstColumnasV2 = null;
-        private List<VersionesColumna> lstColumnas = null;
-        private string Tabla = "";
+        private List<VersionesColumna> lstVersiones;
+        private VersionesTabla vtTabla;
         private Conexion ConexionV2 = null;
         public bool bModifico = false;
 
 
-        public Tablas_Columnas_VISOR(string Tabla, List<Columna> lstColumnasV1, List<Columna> lstColumnasV2, Conexion ConexionV2)
+        public Tablas_Columnas_VISOR(VersionesTabla vtTabla, Conexion ConexionV2)
         {
             InitializeComponent();
-            this.Title = Tabla;
-            this.lstColumnasV1 = lstColumnasV1;
-            this.lstColumnasV2 = lstColumnasV2;
+            this.Title = vtTabla.TablaV1.Nombre;
             this.ConexionV2 = ConexionV2;
-            this.Tabla = Tabla;
+            this.vtTabla = vtTabla;
             Comparar();
         }
 
         public void Comparar()
         {
-            lstColumnas = new List<VersionesColumna>();
+            lstVersiones = new List<VersionesColumna>();
+            string[] arrsColumnasV1 = vtTabla.TablaV1.sScripts.Split((char)13);
+            string[] arrsColumnasV2 = vtTabla.TablaV2.sScripts.Split((char)13);
 
-            int nMaximoV1 = lstColumnasV1.Count;
-            int nMaximoV2 = lstColumnasV2.Count;
+            int nMaximoV1 = arrsColumnasV1.Length;
+            int nMaximoV2 = arrsColumnasV2.Length;
             int nMaximo = nMaximoV1;
 
             if (nMaximoV2 > nMaximo)
@@ -61,20 +59,20 @@ namespace ProcedureUpdater_VH.Vistas
                 bool bRemovido = false;
                 bool bModificacionV2 = false;
 
-                if (lstColumnasV1.Count > i)
+                if (arrsColumnasV1.Length > i)
                 {
-                    CompletoV1 = lstColumnasV1[i].Completo;
-                    bNuevo = !lstColumnasV2.Exists(x => x.Nombre.Equals(lstColumnasV1[i].Nombre));
-                    bModificacion = !lstColumnasV2.Exists(x => x.Completo.Equals(CompletoV1)) && !bNuevo;
+                    CompletoV1 = arrsColumnasV1[i];
+                    bNuevo = !arrsColumnasV2.ToList().Exists(x => x.Equals(CompletoV1) );
+                    bModificacion = !arrsColumnasV2.ToList().Exists(x => x.Equals(CompletoV1) ) && !bNuevo;
                 }
 
-                if (lstColumnasV2.Count > i)
+                if (arrsColumnasV2.Length > i)
                 {
-                    CompletoV2 = lstColumnasV2[i].Completo;
-                    bRemovido = !lstColumnasV1.Exists(x => x.Completo.Equals(CompletoV2));
+                    CompletoV2 = arrsColumnasV2[i];
+                    bRemovido = !arrsColumnasV1.ToList().Exists(x => x.Equals(CompletoV2));
                 }
 
-                lstColumnas.Add(new VersionesColumna
+                lstVersiones.Add(new VersionesColumna
                 {
                     Indice = (i + 1),
                     CompletoV1 = CompletoV1,
@@ -86,48 +84,39 @@ namespace ProcedureUpdater_VH.Vistas
                 });
             }
 
-            for (int i = 0; i < lstColumnas.Count; i++)
+            for (int i = 0; i < lstVersiones.Count; i++)
             {
-                string sNombreV2 = lstColumnas[i].CompletoV2;
+                string sNombreV2 = lstVersiones[i].CompletoV2;
 
                 if (!sNombreV2.Equals(""))
                 {
                     sNombreV2 = sNombreV2.Split(" ")[0];
-                    lstColumnas[i].bModificacionV2 = lstColumnas.Exists(x => !x.CompletoV1.Equals("") && x.CompletoV1.Split(" ")[0].Equals(sNombreV2) && x.bModificacion);
+                    lstVersiones[i].bModificacionV2 = lstVersiones.Exists(x => !x.CompletoV1.Equals("") && x.CompletoV1.Split(" ")[0].Equals(sNombreV2) && x.bModificacion);
                 }
             }
 
-            dg_Scripts.ItemsSource = lstColumnas;
+            dg_Scripts.ItemsSource = lstVersiones;
             dg_Scripts.Items.Refresh();
         }
 
         private void btn_Actualizar_Click(object sender, RoutedEventArgs e)
         {
-            Scripts sql = new Scripts();
-            List<string> lstPropiedades = new List<string>();
-            foreach (Columna columna in lstColumnasV1)
-            {
-                lstPropiedades.Add(columna.Completo);
-            }
-
-            string sScriptCreate = sql.getCreateTables(Tabla, lstPropiedades.ToArray());
-
+            string sScriptCreate = vtTabla.TablaV1.sScripts;
             string sScriptAlter = "";
-
-            foreach (VersionesColumna columna in lstColumnas.Where(x => x.bNuevo || x.bModificacion || x.bRemovido))
+            foreach (VersionesColumna columna in lstVersiones.Where(x => x.bNuevo || x.bModificacion || x.bRemovido))
             {
                 if (columna.bNuevo)
                 {
-                    sScriptAlter += String.Format("ALTER TABLE {0} ADD {1} \nGO\n\n", Tabla, columna.CompletoV1);
+                    sScriptAlter += String.Format("ALTER TABLE {0} ADD {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV1);
                 }
                 else if (columna.bModificacion)
                 {
-                    sScriptAlter += String.Format("ALTER TABLE {0} ALTER COLUMN {1} \nGO\n\n", Tabla, columna.CompletoV1);
+                    sScriptAlter += String.Format("ALTER TABLE {0} ALTER COLUMN {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV1);
                 }
                 
                 if (columna.bRemovido && !columna.bModificacionV2)
                 {
-                    sScriptAlter += String.Format("ALTER TABLE {0} DROP COLUMN {1} \nGO\n\n", Tabla, columna.CompletoV2.Split(" ")[0]);
+                    sScriptAlter += String.Format("ALTER TABLE {0} DROP COLUMN {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV2.Split(" ")[0]);
                 }
             }
 

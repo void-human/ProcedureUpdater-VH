@@ -23,12 +23,13 @@ namespace ProcedureUpdater_VH.Vistas
         public Procedimientos_Backups_MON()
         {
             InitializeComponent();
-            CargarDatos();
+            txt_FechaFiltro.SelectedDate = DateTime.Now;
         }
 
         public void CargarDatos()
         {
-            lstVersiones = Conversor.AbrirBackupScriptXML();
+            DateTime dtFechaFiltro = (DateTime)txt_FechaFiltro.SelectedDate;
+            lstVersiones = Conversor.AbrirBackupScriptXML(dtFechaFiltro);
             dg_Historial.ItemsSource = lstVersiones;
             dg_Historial.Items.Refresh();
         }
@@ -48,6 +49,11 @@ namespace ProcedureUpdater_VH.Vistas
         private void btn_Cerrar_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.GoBack();
+        }
+
+        private void txt_FechaaFiltro_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CargarDatos();
         }
     }
 }

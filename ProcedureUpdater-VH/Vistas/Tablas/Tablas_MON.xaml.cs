@@ -122,7 +122,7 @@ namespace ProcedureUpdater_VH.Vistas
         public void AbrirColumnas()
         {
             VersionesTabla version = (VersionesTabla)dg_Tablas.SelectedItem;
-            Tablas_Columnas_VISOR visor = new Tablas_Columnas_VISOR(version.TablaV1.Nombre, version.TablaV1.lstColumnas, version.TablaV2.lstColumnas, ConexionV2);
+            Tablas_Columnas_VISOR visor = new Tablas_Columnas_VISOR(version, ConexionV2);
             this.NavigationService.Navigate(visor);
             if (visor.bModifico)
             {
