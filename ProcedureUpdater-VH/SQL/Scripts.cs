@@ -15,7 +15,7 @@ namespace ProcedureUpdater_VH.SQL
         {
             string sScript = "";
 
-            var assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             Stream stream = assembly.GetManifestResourceStream("ProcedureUpdater_VH.SQL.Script_Procedures.sql");
             StreamReader reader = new StreamReader(stream);
             sScript = reader.ReadToEnd();
@@ -27,7 +27,7 @@ namespace ProcedureUpdater_VH.SQL
         {
             string sScript = "";
 
-            var assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             Stream stream = assembly.GetManifestResourceStream("ProcedureUpdater_VH.SQL.Script_Tablas.sql");
             StreamReader reader = new StreamReader(stream);
             sScript = reader.ReadToEnd();
@@ -39,12 +39,40 @@ namespace ProcedureUpdater_VH.SQL
         {
             string sScript = "";
 
-            var assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             Stream stream = assembly.GetManifestResourceStream("ProcedureUpdater_VH.SQL.Script_CreateTable.sql");
             StreamReader reader = new StreamReader(stream);
             sScript = reader.ReadToEnd();
 
             sScript = sScript.Replace("@Tabla",sTable);
+
+            return sScript;
+        }
+
+        public static string getTablesRowsCount(string sBusqueda)
+        {
+            string sScript = "";
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Stream stream = assembly.GetManifestResourceStream("ProcedureUpdater_VH.SQL.Script_Registros.sql");
+            StreamReader reader = new StreamReader(stream);
+            sScript = reader.ReadToEnd();
+
+            sScript = sScript.Replace("@Buscar", sBusqueda);
+
+            return sScript;
+        }
+
+        public static string getTablasInformacion(string sTabla)
+        {
+            string sScript = "";
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Stream stream = assembly.GetManifestResourceStream("ProcedureUpdater_VH.SQL.Script_Tabla_Informacion.sql");
+            StreamReader reader = new StreamReader(stream);
+            sScript = reader.ReadToEnd();
+
+            sScript = sScript.Replace("@Tabla", sTabla);
 
             return sScript;
         }

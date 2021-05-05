@@ -12,9 +12,10 @@ namespace ProcedureUpdater_VH.SQL
     {
         private SqlConnection sqlcConexion;
         private SqlCommand cmdProcedimiento;
-        private SqlDataReader DR;
+        public SqlDataReader DR;
         public List<Procedure> lstProcedimiento = null;
         public List<VersionesTabla> lstVersionesTablas = null;
+        public TablaCatalogo tablaCatalogo = null;
 
         private SqlDataReader Ejecutar(Conexion conexion, string sScript)
         {
@@ -35,6 +36,8 @@ namespace ProcedureUpdater_VH.SQL
             cmdProcedimiento.Dispose();
             sqlcConexion.Close();
         }
+
+        #region Procedimientos
 
         public void ObtenerProcedimientos(Conexion ConexionV1, Conexion ConexionV2, string sBuscar)
         {
@@ -123,7 +126,7 @@ namespace ProcedureUpdater_VH.SQL
             }
         }
 
-        public bool ActualizarConexion(Conexion conexion, string Script, string ScriptV2 = "")
+        public bool ActualizarConexionProcedimientos(Conexion conexion, string Script, string ScriptV2 = "")
         {
             try
             {
@@ -137,6 +140,10 @@ namespace ProcedureUpdater_VH.SQL
                 throw;
             }
         }
+
+        #endregion
+
+        #region Tablas
 
         public void GuardarTablas(bool bPrimerConexion)
         {
@@ -291,6 +298,102 @@ namespace ProcedureUpdater_VH.SQL
             //Solo extraeremos las tablas con cambios
             lstVersionesTablas = lstVersionesTablas.Where(x => x.bModificar).ToList();
         }
+        #endregion
+
+        #region Catalogos
+
+        public TablaCatalogo ObtenerTablasCatalogos(Conexion ConexionV1, Conexion ConexionV2, string sBuscar)
+        {
+            try
+            {
+                tablaCatalogo = null;
+                Ejecutar(ConexionV1, Scripts.getTablesRowsCount(sBuscar));
+                CompararConfiguracion(ConexionV1);
+                Cerrar();
+
+                Ejecutar(ConexionV2, Scripts.getTablesRowsCount(sBuscar));
+                CompararConfiguracion(ConexionV2);
+                Cerrar();
+
+                return tablaCatalogo;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private void CompararConfiguracion(Conexion conexion)
+        {
+            try
+            {
+                if (tablaCatalogo == null)
+                {
+                    tablaCatalogo = new TablaCatalogo();
+                    tablaCatalogo.conexion = conexion;
+                    tablaCatalogo.dtCreacion = DateTime.Now;
+                    tablaCatalogo.lstCatalogos = new List<Catalogo>();
+
+                    if (DR != null && DR.HasRows)
+                    {
+                        while (DR.Read())
+                        {
+                            tablaCatalogo.lstCatalogos.Add(new Catalogo()
+                            {
+                                catalogo = false,
+                                nombre = (string)DR["nombre"],
+                                registrosv1 = (int)DR["registros"],
+                                registrosv2 = 0
+                            });
+                        }
+                    }
+
+                    TablaCatalogo tablaCatalogoConfiguracion = Conversor.AbrirTablaCatalogoXML(conexion);
+                    if (tablaCatalogoConfiguracion != null && tablaCatalogoConfiguracion.lstCatalogos != null)
+                    {
+                        for (int i = 0; i < tablaCatalogo.lstCatalogos.Count; i++)
+                        {
+                            tablaCatalogo.lstCatalogos[i].catalogo = tablaCatalogoConfiguracion.lstCatalogos.Exists(x => x.nombre.Equals(tablaCatalogo.lstCatalogos[i].nombre) && x.catalogo);
+                        }
+                    }
+                }
+                else
+                {
+                    if (DR != null && DR.HasRows)
+                    {
+                        while (DR.Read())
+                        {
+                            string sNombre = (string)DR["nombre"];
+                            int nRegistros = (int)DR["registros"];
+
+                            int nIndice = tablaCatalogo.lstCatalogos.FindIndex(x => x.nombre.Equals(sNombre));
+                            if (nIndice != -1)
+                            {
+                                tablaCatalogo.lstCatalogos[nIndice].registrosv2 = nRegistros;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public SqlDataReader ObtenerRegistros(Conexion conexion, string sTabla)
+        {
+            try
+            {
+                return Ejecutar(conexion, Scripts.getTablasInformacion(sTabla));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #endregion
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ProcedureUpdater_VH.Vistas;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -27,6 +28,7 @@ namespace ProcedureUpdater_VH.Metodos
         {
             Mensaje_VISOR msg = new Mensaje_VISOR(ex.Message, "Error");
             msg.ShowDialog();
+            //Process.Start(AppDomain.CurrentDomain.BaseDirectory + "VersionUpdater.exe");
         }
 
         public static void Warning(string sMensaje)

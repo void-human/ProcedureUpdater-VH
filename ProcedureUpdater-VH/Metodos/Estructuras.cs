@@ -42,6 +42,21 @@ namespace ProcedureUpdater_VH.Metodos
         public string sScripts { set; get; }
     }
 
+    public class TablaCatalogo
+    {
+        public List<Catalogo> lstCatalogos { set; get; }
+        public Conexion conexion { set; get; }
+        public DateTime dtCreacion { set; get; }
+    }
+
+    public class Catalogo
+    {
+        public string nombre { set; get; }
+        public bool catalogo { set; get; }
+        public int registrosv1 { set; get; }
+        public int registrosv2 { set; get; }
+    }
+
     public class Columna
     {
         public string Nombre { set; get; }

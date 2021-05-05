@@ -107,16 +107,16 @@ namespace ProcedureUpdater_VH.Vistas
             {
                 if (columna.bNuevo)
                 {
-                    sScriptAlter += String.Format("ALTER TABLE {0} ADD {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV1);
+                    sScriptAlter += String.Format("ALTER TABLE {0} ADD {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV1.Replace("  , ",""));
                 }
                 else if (columna.bModificacion)
                 {
-                    sScriptAlter += String.Format("ALTER TABLE {0} ALTER COLUMN {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV1);
+                    sScriptAlter += String.Format("ALTER TABLE {0} ALTER COLUMN {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV1.Replace("  , ", ""));
                 }
                 
                 if (columna.bRemovido && !columna.bModificacionV2)
                 {
-                    sScriptAlter += String.Format("ALTER TABLE {0} DROP COLUMN {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV2.Split(" ")[0]);
+                    sScriptAlter += String.Format("ALTER TABLE {0} DROP COLUMN {1} \nGO\n\n", vtTabla.TablaV1.Nombre, columna.CompletoV2.Split(" ")[0].Replace("  , ", ""));
                 }
             }
 

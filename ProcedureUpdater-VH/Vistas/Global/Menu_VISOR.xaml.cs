@@ -1,5 +1,8 @@
-﻿using System;
+﻿using ProcedureUpdater_VH.Metodos;
+using ProcedureUpdater_VH.Vistas.Tablas;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +25,7 @@ namespace ProcedureUpdater_VH.Vistas.Global
         {
             InitializeComponent();
         }
+
         private void btn_procedimientos_Click(object sender, RoutedEventArgs e)
         {
             Procedimientos_MON mon = new Procedimientos_MON();
@@ -50,6 +54,12 @@ namespace ProcedureUpdater_VH.Vistas.Global
         {
             Configuracion_FORM conf = new Configuracion_FORM();
             this.NavigationService.Navigate(conf);
+        }
+
+        private void btn_catalogos_Click(object sender, RoutedEventArgs e)
+        {
+            Tablas_Catalogos_MON mon = new Tablas_Catalogos_MON();
+            this.NavigationService.Navigate(mon);
         }
     }
 }

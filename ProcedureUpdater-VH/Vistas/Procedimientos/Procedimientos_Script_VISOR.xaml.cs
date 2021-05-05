@@ -135,7 +135,7 @@ namespace ProcedureUpdater_VH.Vistas
                 try
                 {
                     Ejecutor ejecutor = new Ejecutor();
-                    bool bRespuesta = ejecutor.ActualizarConexion(ConexionV2, sScriptV1);
+                    bool bRespuesta = ejecutor.ActualizarConexionProcedimientos(ConexionV2, sScriptV1);
                     bActualizo = true;
                     if (bRespuesta)
                     {

@@ -104,7 +104,85 @@ namespace ProcedureUpdater_VH.Metodos
             return lstVersiones;
         }
 
-        #endregion 
+        #endregion
+
+        #region Catalogos
+        public static TablaCatalogo AbrirTablaCatalogoXML(Conexion conexion)
+        {
+            TablaCatalogo tablaCatalogo = null;
+            string sPath = "";
+
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "catologos\\";
+            Directory.CreateDirectory(sPath);
+
+            string[] files = Directory.GetFiles(sPath, conexion.sKey + ".ctvh");
+            foreach (string sArchivo in files)
+            {
+                string sInformacion = File.ReadAllText(sArchivo);
+                sInformacion = DesEncriptar(sInformacion);
+
+                string[] sLineas = sInformacion.Split("\n");
+                sInformacion = "";
+                for (int i = 1; i < sLineas.Length; i++)
+                {
+                    sInformacion += sLineas[i];
+                }
+
+                MemoryStream stream = new MemoryStream();
+                StreamWriter writer = new StreamWriter(stream);
+                writer.Write(sInformacion);
+                writer.Flush();
+                stream.Position = 0;
+                XmlSerializer ser = new XmlSerializer(typeof(TablaCatalogo));
+                tablaCatalogo = (TablaCatalogo)ser.Deserialize(stream);
+            }
+
+            return tablaCatalogo;
+        }
+
+        private static void GenerarTablaCatalogoXML(string sXML, string sKey)
+        {
+            string[] lines = new string[] { Encriptar(sXML) };
+            string sFile = sKey;
+
+            string sPath = "";
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "catologos\\";
+            Directory.CreateDirectory(sPath);
+
+            try
+            {
+                File.WriteAllLines(@sPath + sFile + ".ctvh", lines);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static bool GuardarTablaCatalogoXML(TablaCatalogo tablaCatalogo)
+        {
+            try
+            {
+                string sXML = "";
+                StringBuilder sb = new StringBuilder();
+                TextWriter tw = new StringWriter(sb);
+                XmlSerializer ser = new XmlSerializer(typeof(TablaCatalogo));
+                ser.Serialize(tw, tablaCatalogo);
+                tw.Close();
+
+                sXML = sb.ToString();
+
+                GenerarTablaCatalogoXML(sXML, tablaCatalogo.conexion.sKey);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
 
         #region Conexion
 
@@ -212,6 +290,7 @@ namespace ProcedureUpdater_VH.Metodos
         #endregion
 
         #region Configuracion
+
         public static void GuardarConfiguracion(Configuracion configuracion)
         {
             string sXML = "";

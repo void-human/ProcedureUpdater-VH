@@ -1,6 +1,8 @@
-﻿using ProcedureUpdater_VH.Vistas.Global;
+﻿using ProcedureUpdater_VH.Metodos;
+using ProcedureUpdater_VH.Vistas.Global;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -24,12 +26,20 @@ namespace ProcedureUpdater_VH.Vistas
         {
             InitializeComponent();
             MostrarMenu();
+            Version();
         }
 
         public void MostrarMenu()
         {
             Menu_VISOR menu = new Menu_VISOR();
             frm_Principal.Navigate(menu);
+        }
+
+        private void Version()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+            this.Title += " v" + fileVersion.FileVersion;
         }
 
        

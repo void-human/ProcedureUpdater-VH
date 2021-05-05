@@ -1,0 +1,180 @@
+﻿<Page x:Class="ProcedureUpdater_VH.Vistas.Tablas.Tablas_Catalogos_MON"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:local="clr-namespace:ProcedureUpdater_VH.Vistas.Tablas"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" 
+      d:DesignWidth="800"
+      Title="Tablas_Catalogos_MON">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid
+            Background="#1F1F1F" Grid.ColumnSpan="3">
+            <Label 
+                Content="Tablas tipo Catalogo"
+                Foreground="White"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                />
+        </Grid>
+
+        <Grid
+            Grid.Row="2"
+            Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox
+                x:Name="cbx_ConexionV1"
+                materialDesign:HintAssist.Hint="Conexión v1:"
+                materialDesign:HintAssist.IsFloating="True"
+                Width="160"
+                Grid.Column="0"
+                />
+
+            <ComboBox
+                x:Name="cbx_ConexionV2"
+                materialDesign:HintAssist.Hint="Conexión v2:"
+                materialDesign:HintAssist.IsFloating="True"
+                Width="160"
+                Grid.Column="1"
+                />
+
+            <Button
+                x:Name="btn_Buscar"
+                Click="btn_Buscar_Click"
+                Width="50"
+                Grid.Column="2"
+                >
+                <materialDesign:PackIcon 
+                    Kind="Play" 
+                    Foreground="White"/>
+            </Button>
+
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="4"
+                materialDesign:HintAssist.Hint="Buscar"
+                materialDesign:HintAssist.IsFloating="True"
+                TextChanged="txt_Buscar_TextChanged"
+                x:Name="txt_Buscar"
+                Width="220"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Right"
+            />
+        </Grid>
+
+        <DataGrid
+            x:Name="dg_Tablas"
+            Grid.Row="4"
+            Grid.Column="1"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn
+                    Header="¿Catalogo?">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                x:Name="cbx_Actualizar"
+                                Click="cbx_Actualizar_Click"
+                                IsChecked="{Binding catalogo}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn
+                    Header="Nombre"
+                    Binding="{Binding nombre}"/>
+                <DataGridTextColumn
+                    Header="Registros V1"
+                    IsReadOnly="True"
+                    Binding="{Binding registrosv1}"/>
+                <DataGridTextColumn
+                    Header="Registros V2"
+                    IsReadOnly="True"
+                    Binding="{Binding registrosv2}"/>
+                <DataGridTemplateColumn
+                    Header="Ver Registros">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                x:Name="btn_registros"
+                                Click="btn_registros_Click"
+                                Width="40"
+                                Height="35"
+                                >
+                                <StackPanel>
+                                    <materialDesign:PackIcon
+                                        Kind="Record"
+                                        Foreground="White"
+                                        Width="19"
+                                        Height="19"
+                                        />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel
+            Grid.Column="1"
+            Grid.Row="6"
+            Orientation="Horizontal">
+            <Button
+                Width="150"
+                Content="Guardar Configuración"
+                x:Name="btn_Guardar"
+                Click="btn_Guardar_Click"
+                Background="#1B4708"
+                />
+            
+            <Button
+                x:Name="btn_Actualizar"
+                Click="btn_Actualizar_Click"
+                Content="Actualizar Catalogos"
+                Margin="30,0,0,0"
+                Width="120"
+                />
+        </StackPanel>
+
+
+        <Button 
+            Grid.Column="1"
+            Grid.Row="6"
+            Foreground="Black"
+            Background="WhiteSmoke"
+            Width="120"
+            BorderBrush="Black"
+            BorderThickness="1"
+            HorizontalAlignment="Right"
+            x:Name="btn_volver"
+            Click="btn_volver_Click"
+            Content="Volver"
+            />
+    </Grid>
+</Page>

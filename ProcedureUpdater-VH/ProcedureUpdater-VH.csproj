@@ -6,12 +6,19 @@
     <RootNamespace>ProcedureUpdater_VH</RootNamespace>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Recursos\program.ico</ApplicationIcon>
+    <StartupObject>ProcedureUpdater_VH.App</StartupObject>
+    <PackageId>VHQL</PackageId>
+    <NeutralLanguage>es-MX</NeutralLanguage>
+    <AssemblyVersion>1.0.0.8</AssemblyVersion>
+    <FileVersion>1.0.0.8</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="SQL\Script_CreateTable.sql" />
     <None Remove="SQL\Script_Procedures.sql" />
+    <None Remove="SQL\Script_Registros.sql" />
     <None Remove="SQL\Script_Tablas.sql" />
+    <None Remove="SQL\Script_Tabla_Informacion.sql" />
     <None Remove="Vistas\Procedimientos\Procedimientos_Script_VISOR.xaml.cs~RFac382c4.TMP" />
     <None Remove="Vistas\program.ico" />
   </ItemGroup>
@@ -19,8 +26,10 @@
   <ItemGroup>
     <EmbeddedResource Include="SQL\Script_CreateTable.sql" />
     <EmbeddedResource Include="SQL\Script_Procedures.sql" />
+    <EmbeddedResource Include="SQL\Script_Registros.sql" />
     <EmbeddedResource Include="SQL\Script_Tablas.sql" />
     <EmbeddedResource Include="Recursos\program.ico" />
+    <EmbeddedResource Include="SQL\Script_Tabla_Informacion.sql" />
   </ItemGroup>
 
   <ItemGroup>
