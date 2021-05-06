@@ -61,5 +61,11 @@ namespace ProcedureUpdater_VH.Vistas.Global
             Tablas_Catalogos_MON mon = new Tablas_Catalogos_MON();
             this.NavigationService.Navigate(mon);
         }
+
+        private void btn_catalogos_configuracion_Click(object sender, RoutedEventArgs e)
+        {
+            Tablas_Catalogos_Configuracion_MON mon = new Tablas_Catalogos_Configuracion_MON();
+            this.NavigationService.Navigate(mon);
+        }
     }
 }

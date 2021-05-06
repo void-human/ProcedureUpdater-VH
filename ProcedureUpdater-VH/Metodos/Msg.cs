@@ -118,6 +118,10 @@ namespace ProcedureUpdater_VH.Metodos
                     return getColor("Black");
                 case Colores.GrisOscuro:
                     return getColor("#2D302C");
+                case Colores.VerdeClaro:
+                    return getColor("#DBF4D8");
+                case Colores.RojoClaro:
+                    return getColor("#FFC3C2");
                 default:
                     return getColor("Transparent");
             }
@@ -133,9 +137,11 @@ namespace ProcedureUpdater_VH.Metodos
     public enum Colores
     {
         Verde,
+        VerdeClaro,
         Azul,
         Naranja,
         Rojo,
+        RojoClaro,
         Blanco,
         Negro,
         GrisOscuro

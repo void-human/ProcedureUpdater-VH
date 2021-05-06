@@ -22,12 +22,23 @@ namespace ProcedureUpdater_VH.Vistas
     public partial class Configuracion_FORM : Page
     {
         private Configuracion configuracion = null;
+        private ConfiguracionLocal configuracionLocal = null;
         private bool bCambios = false;
         private List<Conexion> lstConexiones = null;
 
         public Configuracion_FORM()
         {
             InitializeComponent();
+            this.configuracionLocal = Conversor.AbrirConfiguracionLocalXML();
+            
+            cbx_usar_compartido.IsChecked = configuracionLocal.Compartir;
+            txt_Directorio_Configuracion_Global.Text = configuracionLocal.Direccion;
+
+            CargarConfiguracionGlobal();
+        }
+
+        public void CargarConfiguracionGlobal()
+        {
             this.configuracion = Conversor.AbrirConfiguracionXML();
             txt_Directorio.Text = configuracion.Direccion;
             cbx_usar_directorio.IsChecked = configuracion.UsarDireccion;
@@ -96,25 +107,59 @@ namespace ProcedureUpdater_VH.Vistas
             }
         }
 
+        private void BuscarDirectorioRed()
+        {
+            SaveFileDialog sfdDirectorio = new SaveFileDialog();
+            sfdDirectorio.Filter = "Configuración (*.cflvh)|*.cflvh";
+            sfdDirectorio.FileName = "Global.cflvh";
+            sfdDirectorio.ShowDialog();
+
+            sfdDirectorio.FileName = sfdDirectorio.FileName.Replace("Global.cflvh", "");
+
+            if (!sfdDirectorio.FileName.Equals(""))
+            {
+                configuracionLocal.Direccion = sfdDirectorio.FileName;
+                txt_Directorio_Configuracion_Global.Text = configuracionLocal.Direccion;
+                bCambios = true;
+            }
+            else
+            {
+                if (Msg.Confirm("No se ha seleccionado ningún directorio, ¿Deseas limpiar el directorio?"))
+                {
+                    configuracionLocal.Direccion= "";
+                    txt_Directorio_Configuracion_Global.Text = configuracionLocal.Direccion;
+                    bCambios = true;
+                }
+            }
+        }
+
         private void Guardar()
         {
             if (bCambios 
                 || configuracion.UsarDireccion != (bool)cbx_usar_directorio.IsChecked 
                 || configuracion.UsarPasos != (bool)cbx_conexion_unica.IsChecked 
                 || (cbx_ConexionV1.SelectedValue != null && !configuracion.sKey1.Equals((string)cbx_ConexionV1.SelectedValue)) 
-                || (cbx_ConexionV2.SelectedValue != null && !configuracion.sKey2.Equals((string)cbx_ConexionV2.SelectedValue)))
+                || (cbx_ConexionV2.SelectedValue != null && !configuracion.sKey2.Equals((string)cbx_ConexionV2.SelectedValue))
+                || (configuracionLocal.Compartir != (bool)cbx_usar_compartido.IsChecked)
+                || (!configuracionLocal.Direccion.Equals(txt_Directorio_Configuracion_Global.Text)))
             {
                 try
                 {
                     if (Msg.Confirm("¿Deseas guardar los cambios realizados?"))
                     {
+                        configuracionLocal.Compartir = (bool)cbx_usar_compartido.IsChecked;
+                        configuracionLocal.Direccion = txt_Directorio_Configuracion_Global.Text;
+
+                        Conversor.GuardarConfiguracionLocal(this.configuracionLocal);
+
                         configuracion.sKey1 = (string) cbx_ConexionV1.SelectedValue;
                         configuracion.sKey2 = (string) cbx_ConexionV2.SelectedValue;
                         configuracion.UsarDireccion = (bool)cbx_usar_directorio.IsChecked;
                         configuracion.UsarPasos = (bool)cbx_conexion_unica.IsChecked;
 
                         Conversor.GuardarConfiguracion(this.configuracion);
-                        Msg.Success("Correcto. Los cambios se guardarón correctamente.");
+
+                        Msg.Success("Correcto. Los cambios en las configuraciones se guardarón correctamente.");
                     }
                 }
                 catch (Exception e)
@@ -138,6 +183,11 @@ namespace ProcedureUpdater_VH.Vistas
         private void btn_Seleccionar_Click(object sender, RoutedEventArgs e)
         {
             BuscarDirectorio();
+        }
+
+        private void btn_Seleccionar_Configuracion_Global_Click(object sender, RoutedEventArgs e)
+        {
+            BuscarDirectorioRed();
         }
     }
 }

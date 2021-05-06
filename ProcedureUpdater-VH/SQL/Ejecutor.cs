@@ -308,11 +308,11 @@ namespace ProcedureUpdater_VH.SQL
             {
                 tablaCatalogo = null;
                 Ejecutar(ConexionV1, Scripts.getTablesRowsCount(sBuscar));
-                CompararConfiguracion(ConexionV1);
+                CompararConfiguracion(ConexionV1, true);
                 Cerrar();
 
                 Ejecutar(ConexionV2, Scripts.getTablesRowsCount(sBuscar));
-                CompararConfiguracion(ConexionV2);
+                CompararConfiguracion(ConexionV2, true);
                 Cerrar();
 
                 return tablaCatalogo;
@@ -323,7 +323,24 @@ namespace ProcedureUpdater_VH.SQL
             }
         }
 
-        private void CompararConfiguracion(Conexion conexion)
+        public TablaCatalogo ObtenerTablasCatalogos(Conexion ConexionV1, string sBuscar)
+        {
+            try
+            {
+                tablaCatalogo = null;
+                Ejecutar(ConexionV1, Scripts.getTablesRowsCount(sBuscar));
+                CompararConfiguracion(ConexionV1, false);
+                Cerrar();
+
+                return tablaCatalogo;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private void CompararConfiguracion(Conexion conexion, bool bLimpiar)
         {
             try
             {
@@ -351,10 +368,19 @@ namespace ProcedureUpdater_VH.SQL
                     TablaCatalogo tablaCatalogoConfiguracion = Conversor.AbrirTablaCatalogoXML(conexion);
                     if (tablaCatalogoConfiguracion != null && tablaCatalogoConfiguracion.lstCatalogos != null)
                     {
-                        for (int i = 0; i < tablaCatalogo.lstCatalogos.Count; i++)
+                        foreach (Catalogo catalogo in tablaCatalogoConfiguracion.lstCatalogos.Where(x => x.catalogo))
                         {
-                            tablaCatalogo.lstCatalogos[i].catalogo = tablaCatalogoConfiguracion.lstCatalogos.Exists(x => x.nombre.Equals(tablaCatalogo.lstCatalogos[i].nombre) && x.catalogo);
+                            int nIndice = tablaCatalogo.lstCatalogos.FindIndex(x => x.nombre.Equals(catalogo.nombre));
+                            if (nIndice != -1)
+                            {
+                                tablaCatalogo.lstCatalogos[nIndice].catalogo = true;
+                            }
                         }
+
+                        if (bLimpiar)
+                        {
+                            tablaCatalogo.lstCatalogos.RemoveAll(x => !x.catalogo);
+                        }  
                     }
                 }
                 else

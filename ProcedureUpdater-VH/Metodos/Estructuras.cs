@@ -96,6 +96,12 @@ namespace ProcedureUpdater_VH.Metodos
         public DateTime dtActualizacion { set; get; }
     }
 
+    public class ConfiguracionLocal
+    {
+        public bool Compartir { set; get; }
+        public string Direccion { set; get; }
+    }
+
     public class Configuracion
     {
         public string sKey2 { set; get;}
@@ -103,7 +109,6 @@ namespace ProcedureUpdater_VH.Metodos
         public string Direccion { set; get; }
         public bool UsarDireccion { set; get; }
         public bool UsarPasos { set; get; }
-    
         private bool getUsarDireccion()
         {
             if(Direccion != null && !Direccion.Equals("")){

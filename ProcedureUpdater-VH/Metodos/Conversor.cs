@@ -49,9 +49,18 @@ namespace ProcedureUpdater_VH.Metodos
             string sFile = sFileKey;
             DateTime dtFecha = DateTime.Now;
             string sDate = dtFecha.Year + "\\" + dtFecha.Month + "\\" + dtFecha.Day + "\\";
+            ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
 
             string sPath = "";
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\" + sDate;
+            if (configuracionLocal.Compartir)
+            {
+                sPath = configuracionLocal.Direccion + "backups\\" + sDate;
+            }
+            else
+            {
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\" + sDate;
+            }
+
             Directory.CreateDirectory(sPath);
 
             try
@@ -67,11 +76,19 @@ namespace ProcedureUpdater_VH.Metodos
         public static List<RespaldoVersion> AbrirBackupScriptXML(DateTime dtFechaFiltro)
         {
             List<RespaldoVersion> lstVersiones = new List<RespaldoVersion>();
+            string sDate = dtFechaFiltro.Year + "\\" + dtFechaFiltro.Month + "\\" + dtFechaFiltro.Day + "\\";
+            ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
 
             string sPath = "";
-            string sDate = dtFechaFiltro.Year + "\\" + dtFechaFiltro.Month + "\\" + dtFechaFiltro.Day + "\\";
+            if (configuracionLocal.Compartir)
+            {
+                sPath = configuracionLocal.Direccion + "backups\\" + sDate;
+            }
+            else
+            {
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\" + sDate;
+            }
 
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "backups\\" + sDate;
             Directory.CreateDirectory(sPath);
 
             string[] files = Directory.GetFiles(sPath, "*.bkvh");
@@ -110,9 +127,17 @@ namespace ProcedureUpdater_VH.Metodos
         public static TablaCatalogo AbrirTablaCatalogoXML(Conexion conexion)
         {
             TablaCatalogo tablaCatalogo = null;
-            string sPath = "";
+            ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
 
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "catologos\\";
+            string sPath = "";
+            if (configuracionLocal.Compartir)
+            {
+                sPath = configuracionLocal.Direccion + "catologos\\";
+            }
+            else
+            {
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "catologos\\";
+            }
             Directory.CreateDirectory(sPath);
 
             string[] files = Directory.GetFiles(sPath, conexion.sKey + ".ctvh");
@@ -144,9 +169,17 @@ namespace ProcedureUpdater_VH.Metodos
         {
             string[] lines = new string[] { Encriptar(sXML) };
             string sFile = sKey;
+            ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
 
             string sPath = "";
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "catologos\\";
+            if (configuracionLocal.Compartir)
+            {
+                sPath = configuracionLocal.Direccion + "catologos\\";
+            }
+            else
+            {
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "catologos\\";
+            }
             Directory.CreateDirectory(sPath);
 
             try
@@ -221,8 +254,18 @@ namespace ProcedureUpdater_VH.Metodos
         {
             try
             {
+                ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
+
                 string sPath = "";
-                sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\" + sKey + ".cxvh";
+                if (configuracionLocal.Compartir)
+                {
+                    sPath = configuracionLocal.Direccion + "vh\\" + sKey + ".cxvh";
+                }
+                else
+                {
+                    sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\" + sKey + ".cxvh";
+                }
+
                 File.Delete(sPath);
                 return true;
             }
@@ -236,9 +279,18 @@ namespace ProcedureUpdater_VH.Metodos
         {
             string[] lines = new string[] { Encriptar(sXML) };
             string sFile = sFileKey;
+            ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
             
             string sPath = "";
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            if (configuracionLocal.Compartir)
+            {
+                sPath = configuracionLocal.Direccion + "vh\\";
+            }
+            else
+            {
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            }
+            
             Directory.CreateDirectory(sPath);
 
             try
@@ -254,9 +306,18 @@ namespace ProcedureUpdater_VH.Metodos
         public static List<Conexion> AbrirConexionXML()
         {
             List<Conexion> lstConexiones = new List<Conexion>();
+            ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
 
             string sPath = "";
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            if (configuracionLocal.Compartir)
+            {
+                sPath = configuracionLocal.Direccion + "vh\\";
+            }
+            else
+            {
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            }
+
             Directory.CreateDirectory(sPath);
 
             string[] files = Directory.GetFiles(sPath, "*.cxvh");
@@ -316,9 +377,18 @@ namespace ProcedureUpdater_VH.Metodos
         private static void GenerarConfiguracionXML(string sXML)
         {
             string[] lines = new string[] { Encriptar(sXML) };
+            ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
 
             string sPath = "";
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            if (configuracionLocal.Compartir)
+            {
+                sPath = configuracionLocal.Direccion + "vh\\";
+            }
+            else
+            {
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            }
+
             Directory.CreateDirectory(sPath);
 
             try
@@ -334,9 +404,18 @@ namespace ProcedureUpdater_VH.Metodos
         public static Configuracion AbrirConfiguracionXML()
         {
             Configuracion configuracion = new Configuracion();
+            ConfiguracionLocal configuracionLocal = AbrirConfiguracionLocalXML();
 
             string sPath = "";
-            sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            if (configuracionLocal.Compartir)
+            {
+                sPath = configuracionLocal.Direccion + "vh\\";
+            }
+            else
+            {
+                sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            }
+
             Directory.CreateDirectory(sPath);
 
             string[] files = Directory.GetFiles(sPath, "*.cfvh");
@@ -364,7 +443,91 @@ namespace ProcedureUpdater_VH.Metodos
 
             return configuracion;
         }
+
+        public static void GuardarConfiguracionLocal(ConfiguracionLocal configuracion)
+        {
+            string sXML = "";
+
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                TextWriter tw = new StringWriter(sb);
+                XmlSerializer ser = new XmlSerializer(typeof(ConfiguracionLocal));
+                ser.Serialize(tw, configuracion);
+                tw.Close();
+
+                sXML = sb.ToString();
+
+                GenerarConfiguracionLocalXML(sXML);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private static void GenerarConfiguracionLocalXML(string sXML)
+        {
+            string[] lines = new string[] { Encriptar(sXML) };
+
+            string sPath = "";
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            Directory.CreateDirectory(sPath);
+
+            try
+            {
+                File.WriteAllLines(@sPath + "config.cflvh", lines);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static ConfiguracionLocal AbrirConfiguracionLocalXML()
+        {
+            ConfiguracionLocal configuracion = new ConfiguracionLocal();
+
+            string sPath = "";
+            sPath = AppDomain.CurrentDomain.BaseDirectory + "vh\\";
+            Directory.CreateDirectory(sPath);
+
+            string[] files = Directory.GetFiles(sPath, "*.cflvh");
+
+            foreach (string sArchivo in files)
+            {
+                string sInformacion = File.ReadAllText(sArchivo);
+                sInformacion = DesEncriptar(sInformacion);
+
+                string[] sLineas = sInformacion.Split("\n");
+                sInformacion = "";
+                for (int i = 1; i < sLineas.Length; i++)
+                {
+                    sInformacion += sLineas[i];
+                }
+
+                var stream = new MemoryStream();
+                var writer = new StreamWriter(stream);
+                writer.Write(sInformacion);
+                writer.Flush();
+                stream.Position = 0;
+                XmlSerializer ser = new XmlSerializer(typeof(ConfiguracionLocal));
+                configuracion = (ConfiguracionLocal)ser.Deserialize(stream);
+            }
+
+            if (configuracion == null)
+            {
+                configuracion.Compartir = false;
+                configuracion.Direccion = AppDomain.CurrentDomain.BaseDirectory;
+                GuardarConfiguracionLocal(configuracion);
+                return AbrirConfiguracionLocalXML();
+            }
+
+            return configuracion;
+        }
         #endregion
+
+
 
         public static void GuardarSQL(string sProcedure, string sScript, string sPath, bool bUsar)
         {

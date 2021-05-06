@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ProcedureUpdater_VH.Metodos;
+using ProcedureUpdater_VH.SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,25 +13,24 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ProcedureUpdater_VH.Metodos;
-using ProcedureUpdater_VH.SQL;
 
 namespace ProcedureUpdater_VH.Vistas.Tablas
 {
     /// <summary>
-    /// Lógica de interacción para Tablas_Catalogos_MON.xaml
+    /// Lógica de interacción para Tablas_Catalogos_Configuracion_MON.xaml
     /// </summary>
-    public partial class Tablas_Catalogos_MON : Page
+    public partial class Tablas_Catalogos_Configuracion_MON : Page
     {
+
         private Ejecutor ejecutor = new Ejecutor();
         private TablaCatalogo objTablaCatalogo = new TablaCatalogo();
         private List<Catalogo> lstCatologosBusqueda = new List<Catalogo>();
         private Conexion ConexionV1;
-        private Conexion ConexionV2;
 
-        public Tablas_Catalogos_MON()
+        public Tablas_Catalogos_Configuracion_MON()
         {
             InitializeComponent();
+
             CargarDatos();
             Configuracion();
         }
@@ -41,11 +42,6 @@ namespace ProcedureUpdater_VH.Vistas.Tablas
             {
                 cbx_ConexionV1.SelectedValue = configuracion.sKey1;
             }
-
-            if (configuracion != null && configuracion.sKey2 != null)
-            {
-                cbx_ConexionV2.SelectedValue = configuracion.sKey2;
-            }
         }
 
         private void CargarDatos()
@@ -53,16 +49,11 @@ namespace ProcedureUpdater_VH.Vistas.Tablas
             List<Conexion> lstConexiones = Conversor.AbrirConexionXML();
 
             cbx_ConexionV1.ItemsSource = lstConexiones;
-            cbx_ConexionV2.ItemsSource = lstConexiones;
 
             cbx_ConexionV1.Items.Refresh();
-            cbx_ConexionV2.Items.Refresh();
 
             cbx_ConexionV1.SelectedValuePath = "sKey";
             cbx_ConexionV1.DisplayMemberPath = "sConexion";
-
-            cbx_ConexionV2.SelectedValuePath = "sKey";
-            cbx_ConexionV2.DisplayMemberPath = "sConexion";
 
             if (lstConexiones.Count == 0)
             {
@@ -70,11 +61,35 @@ namespace ProcedureUpdater_VH.Vistas.Tablas
             }
         }
 
+
+        private void GuardarConfiguracion()
+        {
+            try
+            {
+                if (objTablaCatalogo == null || objTablaCatalogo.lstCatalogos == null || objTablaCatalogo.lstCatalogos.Count == 0)
+                {
+                    Msg.Warning("Información Incompleta. No puedes guardar la configuración de catalogos de esta conexión porque no existen registros.");
+                }
+                else
+                {
+                    if (Msg.Confirm("¿Estás seguro de que deseas guardar los cambios realizados en esta configuración de catalogos a la conexión actual?"))
+                    {
+                        Conversor.GuardarTablaCatalogoXML(objTablaCatalogo);
+                        Msg.Success(string.Format("Correcto. La configuración de catalogos para la conexión {0} se guardó correctamente.", ConexionV1.sConexion));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Msg.Error(ex.Message);
+            }
+        }
+
         private void Buscar()
         {
             try
             {
-                if(objTablaCatalogo != null && objTablaCatalogo.lstCatalogos != null)
+                if (objTablaCatalogo != null && objTablaCatalogo.lstCatalogos != null)
                 {
                     string sBuscar = txt_Buscar.Text;
                     lstCatologosBusqueda = new List<Catalogo>();
@@ -108,19 +123,14 @@ namespace ProcedureUpdater_VH.Vistas.Tablas
             try
             {
                 ConexionV1 = (Conexion)cbx_ConexionV1.SelectedItem;
-                ConexionV2 = (Conexion)cbx_ConexionV2.SelectedItem;
                 if (ConexionV1 == null)
                 {
                     Msg.Warning("Información Incompleta. No has seleccionado una conexión a base de datos principal.");
                 }
-                else if(ConexionV2 == null)
-                {
-                    Msg.Warning("Información Incompleta. No has seleccionado una conexión a base de datos secundaria.");
-                }
                 else
                 {
                     string sBusqueda = txt_Buscar.Text;
-                    objTablaCatalogo = ejecutor.ObtenerTablasCatalogos(ConexionV1, ConexionV2, sBusqueda);
+                    objTablaCatalogo = ejecutor.ObtenerTablasCatalogos(ConexionV1, sBusqueda);
                     Buscar();
                 }
             }
@@ -130,13 +140,20 @@ namespace ProcedureUpdater_VH.Vistas.Tablas
             }
         }
 
-        private void VerRegistros()
+        private void TipoCatalogo()
         {
             try
             {
                 Catalogo catalogo = (Catalogo)dg_Tablas.SelectedItem;
-                Tablas_Catalogos_VISOR visor = new Tablas_Catalogos_VISOR(ConexionV1, ConexionV2, catalogo.nombre);
-                this.NavigationService.Navigate(visor);
+                int nIndice = objTablaCatalogo.lstCatalogos.FindIndex(x => x.nombre.Equals(catalogo.nombre));
+                if (nIndice != -1)
+                {
+                    objTablaCatalogo.lstCatalogos[nIndice].catalogo = !catalogo.catalogo;
+                }
+                else
+                {
+                    throw new Exception("Error. Ocurrió un error inesperado al buscar el indice del registro.");
+                }
             }
             catch (Exception ex)
             {
@@ -144,9 +161,9 @@ namespace ProcedureUpdater_VH.Vistas.Tablas
             }
         }
 
-        private void btn_Actualizar_Click(object sender, RoutedEventArgs e)
+        private void cbx_Actualizar_Click(object sender, RoutedEventArgs e)
         {
-            
+            TipoCatalogo();
         }
 
         private void btn_Buscar_Click(object sender, RoutedEventArgs e)
@@ -154,9 +171,9 @@ namespace ProcedureUpdater_VH.Vistas.Tablas
             BuscarCatalogos();
         }
 
-        private void txt_Buscar_TextChanged(object sender, TextChangedEventArgs e)
+        private void btn_Guardar_Click(object sender, RoutedEventArgs e)
         {
-            Buscar();
+            GuardarConfiguracion();
         }
 
         private void btn_volver_Click(object sender, RoutedEventArgs e)
@@ -164,9 +181,9 @@ namespace ProcedureUpdater_VH.Vistas.Tablas
             this.NavigationService.GoBack();
         }
 
-        private void btn_registros_Click(object sender, RoutedEventArgs e)
+        private void txt_Buscar_TextChanged(object sender, TextChangedEventArgs e)
         {
-            VerRegistros();
+            Buscar();
         }
     }
 }
