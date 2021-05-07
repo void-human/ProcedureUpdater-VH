@@ -27,7 +27,7 @@
         <Grid
             Background="#1F1F1F" Grid.ColumnSpan="3">
             <Label 
-                Content="Script para Actualizar Catalogo"
+                Content="Script para Actualizar Catalogos"
                 Foreground="White"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -38,13 +38,11 @@
 
         <TextBox
             x:Name="txt_Scripts"
-            IsReadOnly="True"
             AcceptsReturn="True"
+            FontSize="14"
             VerticalScrollBarVisibility="Auto"
             Grid.Column="1"
             Grid.Row="2"/>
-
-
 
         <Grid
             Grid.Column="1"
@@ -54,6 +52,13 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions>
+
+            <Button
+                x:Name="btn_Ejecutar"
+                Content="Ejecutar"
+                Background="Green"
+                Click="btn_Ejecutar_Click"
+                />
 
             <Button
                 x:Name="btn_Cerrar"

@@ -419,6 +419,20 @@ namespace ProcedureUpdater_VH.SQL
             }
         }
 
+        public bool ActualizarCatalogos(Conexion conexion, string Script)
+        {
+            try
+            {
+                Ejecutar(conexion, Script);
+                Cerrar();
+                return true;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
 
     }
