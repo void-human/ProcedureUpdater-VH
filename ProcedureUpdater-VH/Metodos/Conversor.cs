@@ -303,6 +303,23 @@ namespace ProcedureUpdater_VH.Metodos
             }
         }
 
+        public static Conexion BuscarConexion(string sKey)
+        {
+            Conexion conexion = null;
+            List<Conexion> lstConexiones = AbrirConexionXML();
+            int nIndice = lstConexiones.FindIndex(x => x.sKey.Equals(sKey));
+            if (nIndice != -1)
+            {
+                conexion = lstConexiones[nIndice];
+            }
+            else
+            {
+                throw new Exception("La conexión a la que intenta acceder es incorrecta o no existe en la configuración actual.");
+            }
+
+            return conexion;
+        }
+
         public static List<Conexion> AbrirConexionXML()
         {
             List<Conexion> lstConexiones = new List<Conexion>();

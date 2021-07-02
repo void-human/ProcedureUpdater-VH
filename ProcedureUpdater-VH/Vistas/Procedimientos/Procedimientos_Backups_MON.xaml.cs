@@ -36,9 +36,18 @@ namespace ProcedureUpdater_VH.Vistas
 
         public void Ver()
         {
-            RespaldoVersion version = (RespaldoVersion)dg_Historial.SelectedItem;
-            Procedimientos_Script_VISOR visor = new Procedimientos_Script_VISOR(version.Nombre, version.ScriptV1, version.ScriptV2);
-            this.NavigationService.Navigate(visor);
+            try
+            {
+                RespaldoVersion version = (RespaldoVersion)dg_Historial.SelectedItem;
+
+                Conexion ConexionV1 = Conversor.BuscarConexion(version.sKey);
+                Procedimientos_Script_VISOR visor = new Procedimientos_Script_VISOR(version.Nombre, version.ScriptV1, version.ScriptV2, ConexionV1, true);
+                this.NavigationService.Navigate(visor);
+            }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
         }
 
         private void btn_Ver_Click(object sender, RoutedEventArgs e)

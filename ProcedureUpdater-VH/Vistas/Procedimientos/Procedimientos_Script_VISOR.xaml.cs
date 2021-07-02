@@ -24,17 +24,31 @@ namespace ProcedureUpdater_VH.Vistas
         private string sScriptV2;
         private string sProcedure;
         private List<Procedimiento> lstScripts = new List<Procedimiento>();
+        private Conexion ConexionV1;
         private Conexion ConexionV2;
         public bool bActualizo;
         private string sPath = "";
         private bool bUsarDireccion = false;
+        private bool bRespaldo = false;
 
-        public Procedimientos_Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2, Conexion ConexionV2 = null)
+        public Procedimientos_Script_VISOR(string sProcedure, string sScriptV1, string sScriptV2, Conexion ConexionV2 = null, bool bRespaldo = false)
         {
             InitializeComponent();
 
             bActualizo = false;
 
+            this.bRespaldo = bRespaldo;
+            if (bRespaldo)
+            {
+                this.ConexionV1 = ConexionV2;
+                btn_Restablecer.Visibility = Visibility.Visible;
+                btn_Actualizar.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                btn_Restablecer.Visibility = Visibility.Collapsed;
+                btn_Actualizar.Visibility = Visibility.Visible;
+            }
 
             if (sScriptV1 == null)
             {
@@ -146,7 +160,7 @@ namespace ProcedureUpdater_VH.Vistas
                         version.dtActualizacion = DateTime.Now;
                         version.ScriptV1 = sScriptV1;
                         version.ScriptV2 = sScriptV2;
-                        version.sKey = "";
+                        version.sKey = ConexionV2.sKey;
                         Conversor.GuardarBackupScript(version);
 
                         if(!bValidar)
@@ -181,6 +195,51 @@ namespace ProcedureUpdater_VH.Vistas
             }
         }
 
+        private void Restablecer()
+        {
+            try
+            {
+                bool bRespuesta = Msg.Confirm("¿Estás seguro de que deseas restablecer el script anterior en la base de datos?");
+                if (bRespuesta)
+                {
+                    Ejecutor ejecutor = new Ejecutor();
+                    bRespuesta = ejecutor.ActualizarConexionProcedimientos(ConexionV2, sScriptV2);
+                    bActualizo = true;
+                    if (bRespuesta)
+                    {
+                        RespaldoVersion version = new RespaldoVersion();
+                        version.BDD = ConexionV2.BDD;
+                        version.IP = ConexionV2.IP;
+                        version.Nombre = sProcedure;
+                        version.dtActualizacion = DateTime.Now;
+                        version.ScriptV1 = sScriptV1;
+                        version.ScriptV2 = sScriptV2;
+                        version.sKey = ConexionV2.sKey;
+                        Conversor.GuardarBackupScript(version);
+
+                        if (!bUsarDireccion)
+                        {
+                            bRespuesta = Msg.Confirm("¿Deseas generar/guardar un documento \"*.SQL\" con el código actualizado?");
+                            if (bRespuesta)
+                            {
+                                Conversor.GuardarSQL(sProcedure, sScriptV2, sPath, bUsarDireccion);
+                            }
+                        }
+                        else
+                        {
+                            Conversor.GuardarSQL(sProcedure, sScriptV2, sPath, bUsarDireccion);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Msg.Error(e);
+            }
+        }
+
+
         private void btn_Cerrar_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.GoBack();
@@ -189,6 +248,11 @@ namespace ProcedureUpdater_VH.Vistas
         private void btn_Actualizar_Click(object sender, RoutedEventArgs e)
         {
             Actualizar();
+        }
+
+        private void btn_Restablecer_Click(object sender, RoutedEventArgs e)
+        {
+            Restablecer();
         }
     }
 }

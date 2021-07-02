@@ -88,11 +88,22 @@
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions>
 
-            <Button
-                x:Name="btn_Actualizar"
-                Content="Actualizar"
-                Click="btn_Actualizar_Click"
-                />
+            <StackPanel
+                Orientation="Horizontal">
+                <Button
+                    x:Name="btn_Actualizar"
+                    Content="Actualizar"
+                    Click="btn_Actualizar_Click"
+                    />
+                <Button
+                    Margin="15,0,0,0"
+                    x:Name="btn_Restablecer"
+                    Content="Restablecer"
+                    Click="btn_Restablecer_Click"
+                    />
+            </StackPanel>
+            
+            
 
             <Button
                 x:Name="btn_Cerrar"
